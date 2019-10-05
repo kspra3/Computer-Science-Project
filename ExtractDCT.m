@@ -104,7 +104,10 @@ function dataExtractingDCT(bWatermarkFile,sWatermarkFile,wImgName)
             out_bstr1 = append(out_bstr1,'0');
         end
     end
-    fprintf("Buyer: %s\n",out_bstr1);
+    fprintf("Extracted Buyer's Watermark: %s\n",out_bstr1);
+    
+    extractedBuyerInfoF = fopen('extractedBuyerInfo.txt', 'w');
+    fprintf(extractedBuyerInfoF,"%s",out_bstr1);
     
     counter = 1;
 
@@ -177,4 +180,14 @@ function dataExtractingDCT(bWatermarkFile,sWatermarkFile,wImgName)
             out_bstr2 = append(out_bstr2,'0');
         end
     end
-    fprintf("Seller: %s\n",out_bstr2);
+    fprintf("Extracted Seller's Watermark: %s\n",out_bstr2);
+    
+    extractedSellerInfoF = fopen('extractedSellerInfo.txt', 'w');
+    fprintf(extractedSellerInfoF,"%s",out_bstr2);
+    
+    if out_bstr1 == bstr1
+        disp("Extracted Buyer's Watermark == Embedded Buyer's Watermark")
+    end
+    if out_bstr2 == bstr2
+        disp("Extracted Seller's Watermark == Embedded Seller's Watermark")
+    end
