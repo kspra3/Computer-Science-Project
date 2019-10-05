@@ -1,6 +1,5 @@
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
-from Crypto.Signature import PKCS1_v1_5
 from Crypto.Hash import SHA3_512
 from Crypto import Random
 from base64 import b64encode, b64decode
@@ -16,6 +15,11 @@ def decrypt(ciphertext, priv_key):
     #RSA encryption protocol according to PKCS#1 OAEP
     cipher = PKCS1_OAEP.new(priv_key)
     return cipher.decrypt(ciphertext)
+
+def hash(message):
+    h_obj = SHA3_512.new()
+    h_obj.update(message)
+    return h_obj.hexdigest()
 
 def encryptRSA():
     msg1 = str.encode(input("Enter input: "))
@@ -43,6 +47,8 @@ def encryptRSA():
         cipherfile.write(cipher)
     with open('originMsg.txt','w+') as orifile:
         orifile.write(msg1.decode("ascii"))
+    with open('hashMsg.txt','w+') as hashfile:
+        hashfile.write(hash(msg1))
 
 if __name__== "__main__":
     encryptRSA()
