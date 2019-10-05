@@ -1,3 +1,4 @@
+% Author: Pang Xu Xuan
 function dataEmbeddingDCT(bWatermarkFile,sWatermarkFile,oriImgFile,wImgName)
     bWatermarkF = fopen(bWatermarkFile,'r');
     bWatermark = fscanf(bWatermarkF, '%s');
