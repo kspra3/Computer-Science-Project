@@ -64,7 +64,7 @@ Output: Watermarked Image, String (Buyer’s Encrypted Information), String (ext
 
 2. The block container that is used to store the watermark in DCT has to be multiple of 4, except for 8 since JPEG image compression uses a block size of 8x8.
 
-3. The DWT hiding of encrypted information is lengthy and requires the image to be bigger than a required size.
+3. The image needs to be bigger than a required size. This is because DWT requires a bigger image size to function properly and secondly the encrypted information is quite lengthy.
 
 
 **Additional Information**
