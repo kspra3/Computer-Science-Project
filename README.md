@@ -33,3 +33,49 @@ Group 9
    The original and extracted Buyer’s personal details, the original and extracted encrypted Buyer’s personal detail and the original and extracted Seller’s watermark are all compared to using the Bit Error Rate and the Mean Squared Error.  
    
    The original image and the watermarked image are compared using SSIM and PSNR.
+
+
+**Software and Platform**
+
+1. Python 64-bits
+
+2. Python Intepreter 64-bits (https://www.python.org/ftp/python/3.7.4/python-3.7.4-amd64.exe)
+
+3. MATLAB
+
+
+**Modules**
+
+1. Python: *Pycryptodome*, *Bitstring*, *Matlab.engine* and *OS*
+
+2. MATLAB: *DCT* and *DWT*
+
+
+**Input and Output**
+
+Input: Image, String (Buyer’s Personal Details), String (Seller’s Watermark).
+
+Output: Watermarked Image, String (Buyer’s Encrypted Information), String (extracted Buyer’s Personal Details), String (extracted Buyer’s Encrypted Information), String (extracted Seller’s Watermark).
+
+
+**Limitations**
+
+1. The DCT data hiding method is not robust against image resizing.
+
+2. The block container that is used to store the watermark in DCT has to be multiple of 4, except for 8 since JPEG image compression uses a block size of 8x8.
+
+3. The DWT hiding of encrypted information is lengthy and requires the image to be bigger than a required size.
+
+
+**Additional Information**
+
+Two different methods, *DCT* and *DWT* were used to embed the watermarks. One method for each watermark.  
+   
+   Result: The quality of the watermark extracted from the watermarked image is poor.  
+   
+   Reasoning: The information of the first watermark is overridden by the second watermark.  
+   
+   Conclusion: Using the data embedding techniques that work in the same domain and frequency will lead to a huge loss in the information of the watermarks that are embedded.  
+   
+   Solution: Using the same data embedding techniques (*DCT* and *DWT*), but embed the watermarks into different frequency. Using one data embedding technique (*DCT* or *DWT*) and split the image into half in order to store both watermarks (one in the upper half and the other one in the lower half).
+
