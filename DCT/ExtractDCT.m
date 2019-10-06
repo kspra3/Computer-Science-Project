@@ -48,6 +48,9 @@ function dataExtractingDCT(bWatermarkFile,sWatermarkFile,wImgName)
         ep_Y = blockCol + block_size - 1;
         %fprintf("starting row: %d ending row: %d \n", sp_X, ep_X);
         %fprintf("starting col: %d ending col: %d \n", sp_Y, ep_Y);
+        if (sp_X>img_size_w||ep_X>img_size_w||sp_Y>img_size_h||ep_Y>img_size_h)
+            break;
+        end
 
         for i = sp_X:ep_X
             if counter > bstr_length1
@@ -124,6 +127,9 @@ function dataExtractingDCT(bWatermarkFile,sWatermarkFile,wImgName)
         ep_Y = blockCol + block_size - 1;
         %fprintf("starting row: %d ending row: %d \n", sp_X, ep_X);
         %fprintf("starting col: %d ending col: %d \n", sp_Y, ep_Y);
+        if (sp_X>img_size_w||ep_X>img_size_w||sp_Y>img_size_h||ep_Y>img_size_h)
+            break;
+        end
 
         for i = sp_X:ep_X
             if counter > bstr_length2
