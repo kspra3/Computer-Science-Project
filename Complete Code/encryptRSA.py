@@ -11,22 +11,22 @@ def encrypt(message, pub_key):
     cipher = PKCS1_OAEP.new(pub_key)
     return cipher.encrypt(message)
 
-def decrypt(ciphertext, priv_key):
-    #RSA encryption protocol according to PKCS#1 OAEP
-    cipher = PKCS1_OAEP.new(priv_key)
-    return cipher.decrypt(ciphertext)
-
 def hash(message):
     h_obj = SHA3_512.new()
     h_obj.update(message)
     return h_obj.hexdigest()
 
-def encryptRSA():
-    msg1 = str.encode(input("Enter input: "))
+def encryptRSA(keyfile, outfile):
+    #msg1 = str.encode(input("Enter input: "))
+    #msg1.replace("|","")
+    msg1 = str(input("Enter input: "))
+    msg1 = msg1.replace("|", "")
+    msg1 = str.encode(msg1)
+    #print(msg1)
     chunks = math.ceil(len(msg1)/32)    
 
     # reading in key from keyfile
-    with open('key.pem', mode='r') as keyfile:
+    with open(keyfile, mode='r') as keyfile:
         private = RSA.import_key(keyfile.read())
 
     cipher = ""
@@ -43,12 +43,14 @@ def encryptRSA():
         c = BitArray(encrypted)
         cipher += c.bin
     
-    with open('ciphertext.txt', "w+") as cipherfile:
+    with open(outfile, "w+") as cipherfile:
         cipherfile.write(cipher)
-    with open('originMsg.txt','w+') as orifile:
+    originFilename = 'origin_' + outfile
+    with open(originFilename,'w+') as orifile:
         orifile.write(msg1.decode("ascii"))
-    with open('hashMsg.txt','w+') as hashfile:
+    hashFilename = 'hash_' + outfile
+    with open(hashFilename,'w+') as hashfile:
         hashfile.write(hash(msg1))
 
 if __name__== "__main__":
-    encryptRSA()
+    encryptRSA('key.pem', 'ciphertext.txt')

@@ -6,11 +6,11 @@ def newkeys(keysize):
     key = RSA.generate(keysize, random_generator)
     return key
 
-def generateKeys():
+def generateKeys(keyfile):
     keysize = 1024
     key = newkeys(keysize)
-    with open('key.pem', mode='wb') as keyfile:
+    with open(keyfile, mode='wb') as keyfile:
         keyfile.write(key.export_key('PEM'))
 
 if __name__== "__main__":
-    generateKeys()
+    generateKeys('key.pem')
