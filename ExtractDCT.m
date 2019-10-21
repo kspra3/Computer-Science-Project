@@ -1,4 +1,3 @@
-% Author: Pang Xu Xuan
 function dataExtractingDCT(bWatermarkFile,sWatermarkFile,wImgName)
     bWatermarkF = fopen(bWatermarkFile,'r');
     bWatermark = fscanf(bWatermarkF, '%s');
