@@ -25,8 +25,6 @@ pip install bitstring
 ### matlab.engine
 To install this package, Matlab R2019a needs to be installed. Administrator privileges might be needed to execute the following commands. 
 
-For more information on installing the matlab.engine package, visit [here](https://au.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html).
-
 To install using the Windows command prompt, run the following commands.
 
 ```
@@ -46,3 +44,5 @@ To install using the MATLAB command prompt, run the following commands.
 cd (fullfile(matlabroot,'extern','engines','python'))
 system('python setup.py install')
 ```
+
+For more information on installing the matlab.engine package, visit [here](https://au.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html).

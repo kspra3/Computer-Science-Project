@@ -1,3 +1,7 @@
+"""
+Performs RSA decryption on ciphertext and compares decrypted plaintext against original plaintext.
+"""
+
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.Hash import SHA3_512
@@ -7,38 +11,73 @@ from bitstring import BitArray
 import math
 
 def decrypt(ciphertext, priv_key):
-    #RSA encryption protocol according to PKCS#1 OAEP
+    """
+    Decrypts a ciphertext using the given key
+
+    parameters:
+    ciphertext (bytes): ciphertext to be decrypted in bytes 
+    priv_key (RSA key): key used to decrypt ciphertext
+
+    return value:
+    decrypted plaintext in bytes 
+    """
+    # creates a cipher object from the given key
     cipher = PKCS1_OAEP.new(priv_key)
+    # decrypt ciphertext using cipher object
     return cipher.decrypt(ciphertext)
 
 def bitstring_to_bytes(s):
+    """
+    Converts bitstring to bytes representation
+
+    parameters:
+    s (bitstring): bitstring to be converted into bytes
+
+    return value:
+    byte representation of bitstring
+    """
     return int(s, 2).to_bytes(len(s) // 8, byteorder='big')
 
 def decryptRSA(keyfile, ciphertextfile):
+    """
+    Decrypts the ciphertext stored in ciphertextfile using the key stored in keyfile
+
+    parameters:
+    keyfile (string): name of file containing key
+    ciphertextfile (string): name of file containing ciphertext
+    """
+    # open ciphertextfile and read in ciphertext
     with open(ciphertextfile, 'r') as cipherfile:
         extractedValue = cipherfile.read()
+    # open keyfile and read in key
     with open(keyfile, mode='r') as keyfile:
         key = RSA.import_key(keyfile.read())
     pubkey = key
 
     newCipher = extractedValue
+    # ciphertext is too long, therefore split into chunks to decrypt
+    # total number of chunks is computed
     chunks = math.ceil(len(newCipher) / 1376)
+    # decrypted plaintext is stored into message
     message = ""
 
+    # decrypt one chunk at a time
     for i in range(chunks):
+        # chunk starting index
         start = i*1376
+        # chunk ending index
         end = (i+1)*1376
+        # Convert ciphertext from bitstring to bytes for decryption
         encrypted = bitstring_to_bytes(newCipher[start:end])
-        #decodes the Base64 encoded bytes-like object or ASCII string s
-        # returns the decoded bytes
+        #decrypts and decodes the Base64 encoded bytes object
         decrypted = decrypt(b64decode(encrypted), pubkey)
+        # store decrypted plaintext into message
         message += decrypted.decode("ascii")
 
     originFilename = 'origin_' + ciphertextfile 
+    # open original message and compare with decrypted message
     with open(originFilename,'r') as orifile:
         msg1 = orifile.read()
-        #print('original msg: {}'.format(msg1))
-        #print('decrypted msg: {}'.format(message))
         print('original msg == decrypted msg: {}'.format(msg1 == message))
 
 if __name__== "__main__":
