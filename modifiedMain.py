@@ -143,12 +143,12 @@ if (userInput == 'Y'):
             extractedSellerWatermark = extracted_seller_watermark.read()
 
         with open(buyerCipherFile, 'r') as buyer_cipher:
-            buyerWatermark = buyer_cipher.read()
+            buyerEncryptedWatermark = buyer_cipher.read()
 
         with open(sellerCipherFile, 'r') as seller_cipher:
-            sellerWatermark = seller_cipher.read()
+            sellerEncryptedWatermark = seller_cipher.read()
             
-        if (buyerWatermark != extractedBuyerWatermark or sellerWatermark != extractedSellerWatermark):
+        if (buyerEncryptedWatermark != extractedBuyerWatermark or sellerEncryptedWatermark != extractedSellerWatermark):
             print("Extracted watermarks DOES NOT MATCH with the watermarks embedded")
             print("Program will now exit")
         else:
@@ -168,7 +168,7 @@ if (userInput == 'Y'):
             print("Decryption is done\n")
 
             if (decryptRSAReturnValueBuyer == 1 and decryptRSAReturnValueSeller == 1):
-                print("The Decrypted values MATCH with the watermarks given by buyer and seller\n")
+                print("The decrypted values MATCH with the watermarks given by buyer and seller\n")
 
                 print("Trusted third party will then send the watermarked image to the buyer")
                 print("It has reached the end of the program and it will now exit")
@@ -179,40 +179,86 @@ if (userInput == 'Y'):
 
 elif (userInput == 'N'):
     watermarkedImageName = str(input("Enter the name of the watermarked image: "))
-    print("Start extracting the watermarks")
-    eng.ExtractDCT(bWatermarkFile, sWatermarkFile, watermarkedImageName, nargout=0)
-    print("Watermarks are extracted\n")
+    buyerEncryptedWatermarkFN = str(input("Enter the filename that contains Buyer's Encrypted Watermark (buyerCipher.txt): "))
+    sellerEncryptedWatermarkFN = str(input("Enter the filename that contains Seller's Encrypted Watermark (sellerCipher.txt): "))
+    buyerWatermarkFN = str(input("Enter the filename that contains Buyer's Watermark (origin_buyerCipher.txt): "))
+    sellerWatermarkFN = str(input("Enter the filename that contains Seller's Watermark (origin_sellerCipher.txt): "))
 
-    """
+    print("Start extracting the watermarks")
+    try:
+        eng.ExtractDCT(bWatermarkFile, sWatermarkFile, watermarkedImageName, nargout=0)
+    except:
+        print("File does not exist")
+        print("Program will now exit")
+        sys.exit()
+    print("Watermarks are extracted\n")
+    
     with open(buyerExtractedFile, 'r') as extracted_buyer_watermark:
         extractedBuyerWatermark = extracted_buyer_watermark.read()
 
     with open(sellerExtractedFile, 'r') as extracted_seller_watermark:
         extractedSellerWatermark = extracted_seller_watermark.read()
 
-    with open(buyerCipherFile, 'r') as buyer_cipher:
-        buyerWatermark = buyer_cipher.read()
+    try:
+        with open(buyerEncryptedWatermarkFN, 'r') as buyer_cipher:
+            buyerEncryptedWatermark = buyer_cipher.read()
+            #print(buyerEncryptedWatermark)
+    except:
+            print("File does not exist")
+            print("Program will now exit")
+            sys.exit()
 
-    with open(sellerCipherFile, 'r') as seller_cipher:
-        sellerWatermark = seller_cipher.read()
-    """
+    try:
+        with open(sellerEncryptedWatermarkFN, 'r') as seller_cipher:
+            sellerEncryptedWatermark = seller_cipher.read()
+            #print(sellerEncryptedWatermark)
+    except:
+            print("File does not exist")
+            print("Program will now exit")
+            sys.exit()
     
-    if (buyerWatermark != extractedBuyerWatermark or sellerWatermark != extractedSellerWatermark):
+    if (buyerEncryptedWatermark != extractedBuyerWatermark or sellerEncryptedWatermark != extractedSellerWatermark):
         print("The extracted ciphertext does not match the original ciphertext")
-        print("Buyer Watermark: " + str(buyerWatermark))
+        print("Buyer Watermark: " + str(buyerEncryptedWatermark))
         print("Extracted Buyer Watermark: " + str(extractedBuyerWatermark))
-        print("Seller Watermark: " + str(sellerWatermark))
+        print("Seller Watermark: " + str(sellerEncryptedWatermark))
         print("Extracted Seller Watermark: " + str(extractedSellerWatermark))
+        print("Program will now exit")
     else:
-        decryptRSA.decryptRSA(buyerKey, buyerCipherFile)
-        decryptRSA.decryptRSA(sellerKey, sellerCipherFile)
-        if (decryptRSAReturnValueBuyer == 1 and decryptRSAReturnValueSeller == 1):
-            print("The Decrypted values MATCH with the watermarks given by buyer and seller\n")
+        try:
+            decryptRSAReturnValueBuyer = decryptRSA.decryptRSA(buyerKey, buyerCipherFile, buyerWatermarkFN)
+        except:
+            print("File does not exist")
+            print("Program will now exit")
+            sys.exit()
+            
+        try:
+            decryptRSAReturnValueSeller = decryptRSA.decryptRSA(sellerKey, sellerCipherFile, sellerWatermarkFN)
+        except:
+            print("File does not exist")
+            print("Program will now exit")
+            sys.exit()
+            
+        if (decryptRSAReturnValueBuyer == 1):
+            print("The decrypted values MATCH with the suspected buyer's watermark")
+            print("The buyer who has this watermark is the culprit who redistributed the image without the permission of the content owner\n")
 
             print("The program has reached the end and it will now exit")
-        else:
-            print("The decrypted values DOES NOT MATCH with the watermarks given by buyer and seller\n")
+        elif (decryptRSAReturnValueSeller == 1):
+            print("The decrypted values MATCH with the seller's watermark")
+            print("Proves that the seller is the owner of this image\n")
 
-            print("Program will now exit")
+            print("The program has reached the end and it will now exit")
+        elif (decryptRSAReturnValueBuyer == 0):
+            print("The decrypted values DOES NOT MATCH with the suspected buyer's watermark")
+            print("The suspected buyer is not the one who redistributed the image without the permission of the content owner\n")
+
+            print("The program has reached the end and it will now exit")
+        elif (decryptRSAReturnValueSeller == 0):
+            print("The decrypted values MATCH with the seller's watermark")
+            print("The seller is not the owner of this image\n")
+            
+            print("The program has reached the end and it will now exit")
+
 else:
     print("Incorrect input!")
