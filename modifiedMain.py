@@ -4,6 +4,7 @@ import encryptRSA
 import decryptRSA
 import generateKeys
 import hashVerify
+import sys
 
 cwd = os.path.dirname(os.path.abspath(__file__))
 eng = matlab.engine.start_matlab()
@@ -14,194 +15,204 @@ sellerKey = 'seller.pem'
 buyerCipherFile = 'buyerCipher.txt'
 sellerCipherFile = 'sellerCipher.txt'
 
+bWatermarkFile = buyerCipherFile
+sWatermarkFile = sellerCipherFile
 
-# Buyer Side
-"""
-Generates Public and Private Key Pairs
-Returns:
-1. Generated Key Pairs - saved into 'buyer.pem' file
-"""
-print("Buyer generates the public and private key pairs")
-generateKeys.generateKeys(buyerKey)
-print("Buyer's public and private key pairs is generated\n")
+buyerExtractedFile = "extracted_" + buyerCipherFile
+sellerExtractedFile = "extracted_" + sellerCipherFile
+buyerOriginfilename = "origin_" + buyerCipherFile
+sellerOriginfilename = "origin_" + sellerCipherFile
 
-"""
-Prompts Buyer for watermark
-RSA Encryption is done using Buyer's Private Key
-Returns:
-1. Encrypted Watermark - saved into 'buyerCipher.txt' file
-2. Buyer's Hash - saved into 'hash_buyerCipher.txt' file
-"""
-print("Buyer will now insert the watermark")
-encryptRSA.encryptRSA(buyerKey, buyerCipherFile)
-print("Buyer's watermark is successfully encrypted with buyer's private key")
-print("Buyer's information hash is generated as well")
-print("Buyer sends the encrypted watermark and information hash over to the seller")
-print("################################################################################################################################")
+print("Choose Y for the whole simulation of buyer-seller scenario")
+print("Choose N for verification of the culprit")
+userInput = str(input("Enter (Y/N): "))
 
-# Seller Side
-print("Seller receives buyer's encrypted watermark and information hash")
-
-"""
-Verifies the authenticity of a ciphertext by decrypting the ciphertext,
-Computing its hash and comparing the computed hash against the received hash
-Returns:
-1. 0 or 1 value indicating whether the Buyer's hash information matches with
-   the hash information produced by the Encrypted Watermark.
-   0 = Does not match
-   1 = Matched
-"""
-print("Seller verifies buyer's identity")
-hashFilename = "hash_" + buyerCipherFile
-hashVerifyReturnValue = hashVerify.verify(buyerKey, buyerCipherFile, hashFilename)
-if hashVerifyReturnValue == 0:
-    print("Buyer's hash information DOES NOT MATCH with the hash information produced by the encrypted watermark\n")
-    print("Program will now exit")
-else:
-    print("Buyer's hash information MATCHES with the hash information produced by the encrypted watermark\n")
-
+if (userInput == 'Y'):
+    # Buyer Side
     """
     Generates Public and Private Key Pairs
     Returns:
-    1. Generated Key Pairs - saved into 'seller.pem' file
+    1. Generated Key Pairs - saved into 'buyer.pem' file
     """
-    print("Seller generates the public and private key pairs")
-    generateKeys.generateKeys(sellerKey)
-    print("Seller's public and private key pairs is generated\n")
+    print("Buyer generates the public and private key pairs")
+    generateKeys.generateKeys(buyerKey)
+    print("Buyer's public and private key pairs is generated\n")
 
     """
-    Prompts Seller for watermark
-    RSA Encryption is done using Seller's Private Key
+    Prompts Buyer for watermark
+    RSA Encryption is done using Buyer's Private Key
     Returns:
-    1. Encrypted Watermark - saved into 'sellerCipher.txt' file
-    2. Seller's Hash - saved into 'hash_sellerCipher.txt' file
+    1. Encrypted Watermark - saved into 'buyerCipher.txt' file
+    2. Buyer's Hash - saved into 'hash_buyerCipher.txt' file
     """
-    print("Seller will now insert the watermark")
-    encryptRSA.encryptRSA(sellerKey, sellerCipherFile)
-    print("Seller's watermark is successfully encrypted with seller's private key")
-    print("Seller's information hash is generated as well\n")
+    print("Buyer will now insert the watermark")
+    encryptRSA.encryptRSA(buyerKey, buyerCipherFile)
+    print("Buyer's watermark is successfully encrypted with buyer's private key")
+    print("Buyer's information hash is generated as well")
+    print("Buyer sends the encrypted watermark and information hash over to the seller")
+    print("")
 
-    bWatermarkFile = buyerCipherFile
-    sWatermarkFile = sellerCipherFile
+    # Seller Side
+    print("Seller receives buyer's encrypted watermark and information hash")
 
-    print("Seller embeds both encrypted watermarks into an image that the buyer wants to purchase")
-    print("Seller specify the name of the original image that the buyer wants to purchase")
-    oriImgFile = str(input("Enter the name of the original image: "))
-    print("Seller specify the name for the watermarked image that will be pass to the buyer")
-    wImgName = str(input("Enter the name for the watermarked image: "))
     """
-    Embed both watermarks into an image
+    Verifies the authenticity of a ciphertext by decrypting the ciphertext,
+    Computing its hash and comparing the computed hash against the received hash
     Returns:
-    1. Watermarked Image
-    """
-    print("Watermark embedding starts")
-    eng.EmbedDCT(bWatermarkFile, sWatermarkFile, oriImgFile, wImgName, nargout=0)
-    print("Watermark is embedded\n")
-
-    print("Seller sends the watermarked image over to trusted third party along with the seller's watermark")
-    print("Buyer will also sends the the watermark over to trusted third party")
-    print("To verify that the watermarks that were embedded in the watermarked image belong to the buyer and the seller")
-    print("################################################################################################################################")
-
-    # Trusted Third Party Side
-    print("Trusted third party receives the watermarked image and seller's watermark from the seller")
-    print("Trusted third party also receives buyer's watermark from the buyer")
-    print("Trusted third party checks whether the watermarks in the image belong to the buyer and the seller\n")
-
-    print("Trusted third party extracts both watermarks out of the watermarked image")
-    """
-    Extract both watermarks
-    Returns:
-    1. 0 or 1 value indicating whether the extracted watermarks matches with the watermarks embedded by the seller
+    1. 0 or 1 value indicating whether the Buyer's hash information matches with
+       the hash information produced by the Encrypted Watermark.
        0 = Does not match
        1 = Matched
     """
-    print("Start extracting the watermarks")
-    extractDCTReturnValue = eng.ExtractDCT(bWatermarkFile, sWatermarkFile, wImgName, nargout=0)
-    print("Watermarks are extracted\n")
-
-    if extractDCTReturnValue == 0:
-        print("Extracted watermarks DOES NOT MATCH with the watermarks embedded")
+    print("Seller verifies buyer's identity")
+    hashFilename = "hash_" + buyerCipherFile
+    hashVerifyReturnValue = hashVerify.verify(buyerKey, buyerCipherFile, hashFilename)
+    if hashVerifyReturnValue == 0:
+        print("Buyer's hash information DOES NOT MATCH with the hash information produced by the encrypted watermark\n")
         print("Program will now exit")
     else:
-        print("Extracted watermarks MATCH with the watermarks embedded\n")
+        print("Buyer's hash information MATCHES with the hash information produced by the encrypted watermark\n")
 
-        buyerExtractedFile = "extracted_" + buyerCipherFile
-        sellerExtractedFile = "extracted_" + sellerCipherFile
-        buyerOriginfilename = "origin_" + buyerCipherFile
-        sellerOriginfilename = "origin_" + sellerCipherFile
-
-        print("Trusted third party decrypts the extracted watermark using Seller's and Buyer's Public Key")
         """
-        RSA Decryption is done to the Encrypted Buyer's and Seller's Watermark using their respective Public Key
+        Generates Public and Private Key Pairs
         Returns:
-        1. 0 or 1 value indicating whether the decrypted value matches with the watermarks given by buyer and seller
+        1. Generated Key Pairs - saved into 'seller.pem' file
+        """
+        print("Seller generates the public and private key pairs")
+        generateKeys.generateKeys(sellerKey)
+        print("Seller's public and private key pairs is generated\n")
+
+        """
+        Prompts Seller for watermark
+        RSA Encryption is done using Seller's Private Key
+        Returns:
+        1. Encrypted Watermark - saved into 'sellerCipher.txt' file
+        2. Seller's Hash - saved into 'hash_sellerCipher.txt' file
+        """
+        print("Seller will now insert the watermark")
+        encryptRSA.encryptRSA(sellerKey, sellerCipherFile)
+        print("Seller's watermark is successfully encrypted with seller's private key")
+        print("Seller's information hash is generated as well\n")
+
+        print("Seller embeds both encrypted watermarks into an image that the buyer wants to purchase")
+        print("Seller specify the name of the original image that the buyer wants to purchase")
+        oriImgFile = str(input("Enter the name of the original image: "))
+        print("Seller specify the name for the watermarked image that will be pass to the buyer")
+        wImgName = str(input("Enter the name for the watermarked image: "))
+        """
+        Embed both watermarks into an image
+        Returns:
+        1. Watermarked Image
+        """
+        print("Watermark embedding starts")
+        try:
+            eng.EmbedDCT(bWatermarkFile, sWatermarkFile, oriImgFile, wImgName, nargout=0)
+        except:
+            print("File does not exist")
+            print("Program will now exit")
+            sys.exit()
+            
+        print("Watermark is embedded\n")
+
+        print("Seller sends the watermarked image over to trusted third party along with the seller's watermark")
+        print("Buyer will also sends the the watermark over to trusted third party")
+        print("To verify that the watermarks that were embedded in the watermarked image belong to the buyer and the seller")
+        print("")
+
+        # Trusted Third Party Side
+        print("Trusted third party receives the watermarked image and seller's watermark from the seller")
+        print("Trusted third party also receives buyer's watermark from the buyer")
+        print("Trusted third party checks whether the watermarks in the image belong to the buyer and the seller\n")
+
+        print("Trusted third party extracts both watermarks out of the watermarked image")
+        """
+        Extract both watermarks
+        Returns:
+        1. 0 or 1 value indicating whether the extracted watermarks matches with the watermarks embedded by the seller
            0 = Does not match
            1 = Matched
         """
-        print("Start Decrypting the Extracted Encrypted Watermarks of Buyer and Seller")
-        decryptRSAReturnValueBuyer = decryptRSA.decryptRSA(buyerKey, buyerCipherFile, buyerOriginfilename)
-        decryptRSAReturnValueSeller = decryptRSA.decryptRSA(sellerKey, sellerCipherFile, sellerOriginfilename)
-        print("Decryption is done\n")
-
-        if (decryptRSAReturnValueBuyer == 1 and decryptRSAReturnValueSeller == 1):
-            print("The Decrypted values MATCH with the watermarks given by buyer and seller\n")
-
-            print("Trusted third party will then send the watermarked image to the buyer")
-            print("Reached the end of the program, It will now exit")
-        else:
-            print("The decrypted values DOES NOT MATCH with the watermarks given by buyer and seller")
-            print("Program will now exit")
-
-"""
-print("Seller extracts both watermarks out in order to ensure that the watermarks are correctly embedded into the image")
-    print("Watermark extracting starts")
-    # Extract both watermarks
-    # Returns:
-    # 1. 0 or 1 value indicating whether the extracted watermarks matches with the watermarks embedded by the seller
-    #    0 = Does not match
-    #    1 = Matched
-    extractDCTReturnValue = eng.ExtractDCT(bWatermarkFile, sWatermarkFile, wImgName, nargout=0)
-    print("Watermark is extracted\n")
-    
-    if extractDCTReturnValue == 0:
-        print("Extracted watermarks DOES NOT MATCH with the watermarks embedded by the seller")
-        print("Program will now exit")
-    else:
-        print("Extracted watermarks MATCH with the watermarks embedded by the seller\n")
-
-        buyerExtractedFile = "extracted_" + buyerCipherFile
-        sellerExtractedFile = "extracted_" + sellerCipherFile
+        print("Start extracting the watermarks")
+        eng.ExtractDCT(bWatermarkFile, sWatermarkFile, wImgName, nargout=0)
+        print("Watermarks are extracted\n")
         
-        print("Seller decrypts the extracted watermark using Seller's and Buyer's Public Key")
-        # RSA Decryption is done to the Encrypted Buyer's and Seller's Watermark using their respective Public Key
-        # Returns:
-        # 1. 0 or 1 value indicating whether the decrypted value matches with the watermarks given by buyer and seller
-        #    0 = Does not match
-        #    1 = Matched
-        print("Start Decrypting the Extracted Encrypted Watermarks of Buyer and Seller")
-        decryptRSAReturnValueBuyer = decryptRSA.decryptRSA(buyerKey, buyerCipherFile)
-        decryptRSAReturnValueSeller = decryptRSA.decryptRSA(sellerKey, sellerCipherFile)
-        print("Decryption is done\n")
+        with open(buyerExtractedFile, 'r') as extracted_buyer_watermark:
+            extractedBuyerWatermark = extracted_buyer_watermark.read()
 
+        with open(sellerExtractedFile, 'r') as extracted_seller_watermark:
+            extractedSellerWatermark = extracted_seller_watermark.read()
+
+        with open(buyerCipherFile, 'r') as buyer_cipher:
+            buyerWatermark = buyer_cipher.read()
+
+        with open(sellerCipherFile, 'r') as seller_cipher:
+            sellerWatermark = seller_cipher.read()
+            
+        if (buyerWatermark != extractedBuyerWatermark or sellerWatermark != extractedSellerWatermark):
+            print("Extracted watermarks DOES NOT MATCH with the watermarks embedded")
+            print("Program will now exit")
+        else:
+            print("Extracted watermarks MATCH with the watermarks embedded\n")
+
+            print("Trusted third party decrypts the extracted watermark using Seller's and Buyer's Public Key")
+            """
+            RSA Decryption is done to the Encrypted Buyer's and Seller's Watermark using their respective Public Key
+            Returns:
+            1. 0 or 1 value indicating whether the decrypted value matches with the watermarks given by buyer and seller
+               0 = Does not match
+               1 = Matched
+            """
+            print("Start Decrypting the Extracted Encrypted Watermarks of Buyer and Seller")
+            decryptRSAReturnValueBuyer = decryptRSA.decryptRSA(buyerKey, buyerCipherFile, buyerOriginfilename)
+            decryptRSAReturnValueSeller = decryptRSA.decryptRSA(sellerKey, sellerCipherFile, sellerOriginfilename)
+            print("Decryption is done\n")
+
+            if (decryptRSAReturnValueBuyer == 1 and decryptRSAReturnValueSeller == 1):
+                print("The Decrypted values MATCH with the watermarks given by buyer and seller\n")
+
+                print("Trusted third party will then send the watermarked image to the buyer")
+                print("It has reached the end of the program and it will now exit")
+            else:
+                print("The decrypted values DOES NOT MATCH with the watermarks given by buyer and seller\n")
+
+                print("Program will now exit")
+
+elif (userInput == 'N'):
+    watermarkedImageName = str(input("Enter the name of the watermarked image: "))
+    print("Start extracting the watermarks")
+    eng.ExtractDCT(bWatermarkFile, sWatermarkFile, watermarkedImageName, nargout=0)
+    print("Watermarks are extracted\n")
+
+    """
+    with open(buyerExtractedFile, 'r') as extracted_buyer_watermark:
+        extractedBuyerWatermark = extracted_buyer_watermark.read()
+
+    with open(sellerExtractedFile, 'r') as extracted_seller_watermark:
+        extractedSellerWatermark = extracted_seller_watermark.read()
+
+    with open(buyerCipherFile, 'r') as buyer_cipher:
+        buyerWatermark = buyer_cipher.read()
+
+    with open(sellerCipherFile, 'r') as seller_cipher:
+        sellerWatermark = seller_cipher.read()
+    """
+    
+    if (buyerWatermark != extractedBuyerWatermark or sellerWatermark != extractedSellerWatermark):
+        print("The extracted ciphertext does not match the original ciphertext")
+        print("Buyer Watermark: " + str(buyerWatermark))
+        print("Extracted Buyer Watermark: " + str(extractedBuyerWatermark))
+        print("Seller Watermark: " + str(sellerWatermark))
+        print("Extracted Seller Watermark: " + str(extractedSellerWatermark))
+    else:
+        decryptRSA.decryptRSA(buyerKey, buyerCipherFile)
+        decryptRSA.decryptRSA(sellerKey, sellerCipherFile)
         if (decryptRSAReturnValueBuyer == 1 and decryptRSAReturnValueSeller == 1):
             print("The Decrypted values MATCH with the watermarks given by buyer and seller\n")
 
-            print("Seller sends the watermarked image over to Trusted Third Party along with the seller's watermark")
-            print("Buyer will also sends the the watermark over to Trusted Third Party")
-            print("To Verify that the watermarks that were embedded in the watermarked image belong to the buyer and the seller")
-            print("################################################################################################################################")
-
-            print("Trusted third party receives the watermarked image and seller's watermark from the seller")
-            print("Trusted third party also receives buyer's watermark from the buyer")
-            print("Trusted third party checks whether the watermarks in the image belong to the buyer and the seller")
-            # Extract both watermarks
-            # Returns:
-            # 1. 0 or 1 value indicating whether the extracted watermarks matches with the watermarks embedded by the seller
-            #    0 = Does not match
-            #    1 = Matched
-            extractDCTReturnValue = eng.ExtractDCT(bWatermarkFile, sWatermarkFile, wImgName, nargout=0)
+            print("The program has reached the end and it will now exit")
         else:
-            print("The Decrypted values DOES NOT MATCH with the watermarks given by buyer and seller")
-            print("Program will now Exit")
-"""
+            print("The decrypted values DOES NOT MATCH with the watermarks given by buyer and seller\n")
+
+            print("Program will now exit")
+else:
+    print("Incorrect input!")
