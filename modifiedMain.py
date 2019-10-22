@@ -14,6 +14,7 @@ sellerKey = 'seller.pem'
 buyerCipherFile = 'buyerCipher.txt'
 sellerCipherFile = 'sellerCipher.txt'
 
+
 # Buyer Side
 # Generates Public and Private Key Pairs
 # Returns:
@@ -45,7 +46,8 @@ print("Seller receives buyer's encrypted watermark and information hash")
 #    0 = Does not match
 #    1 = Matched
 print("Seller verifies buyer's identity")
-hashVerifyReturnValue = hashVerify.verify(buyerKey, buyerCipherFile)
+hashFilename = "hash_" + buyerCipherFile
+hashVerifyReturnValue = hashVerify.verify(buyerKey, buyerCipherFile, hashFilename)
 if hashVerifyReturnValue == 0:
     print("Buyer's hash information DOES NOT MATCH with the hash information produced by the encrypted watermark\n")
     #print("Seller requests the Buyer to send correct hash information that matches the hash information produced by the Encrypted Watermark")
@@ -113,6 +115,8 @@ else:
 
         buyerExtractedFile = "extracted_" + buyerCipherFile
         sellerExtractedFile = "extracted_" + sellerCipherFile
+        buyerOriginfilename = "origin_" + buyerCipherFile
+        sellerOriginfilename = "origin_" + sellerCipherFile
 
         print("Trusted third party decrypts the extracted watermark using Seller's and Buyer's Public Key")
         # RSA Decryption is done to the Encrypted Buyer's and Seller's Watermark using their respective Public Key
@@ -121,8 +125,8 @@ else:
         #    0 = Does not match
         #    1 = Matched
         print("Start Decrypting the Extracted Encrypted Watermarks of Buyer and Seller")
-        decryptRSAReturnValueBuyer = decryptRSA.decryptRSA(buyerKey, buyerCipherFile)
-        decryptRSAReturnValueSeller = decryptRSA.decryptRSA(sellerKey, sellerCipherFile)
+        decryptRSAReturnValueBuyer = decryptRSA.decryptRSA(buyerKey, buyerCipherFile, buyerOriginfilename)
+        decryptRSAReturnValueSeller = decryptRSA.decryptRSA(sellerKey, sellerCipherFile, sellerOriginfilename)
         print("Decryption is done\n")
 
         if (decryptRSAReturnValueBuyer == 1 and decryptRSAReturnValueSeller == 1):

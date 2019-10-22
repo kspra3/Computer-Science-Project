@@ -105,5 +105,3 @@ def encryptRSA(keyfile, outfile):
     with open(hashFilename,'w+') as hashfile:
         hashfile.write(hash(msg1))
 
-if __name__== "__main__":
-    encryptRSA('key.pem', 'ciphertext.txt')

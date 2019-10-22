@@ -31,6 +31,3 @@ def generateKeys(keyfile):
     key = newkeys(keysize)
     with open(keyfile, mode='wb') as keyfile:
         keyfile.write(key.export_key('PEM'))
-
-if __name__== "__main__":
-    generateKeys('key.pem')

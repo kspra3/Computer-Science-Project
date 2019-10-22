@@ -1,6 +1,7 @@
 """
 Verifies the authenticity of a ciphertext by decrypting the ciphertext,
 computing its hash and comparing the computed hash against the received hash.
+Returns 1 if received hash matches computed hash, else return 0.
 """
 
 from Crypto.PublicKey import RSA
@@ -55,7 +56,7 @@ def bitstring_to_bytes(s):
     """    
     return int(s, 2).to_bytes(len(s) // 8, byteorder='big')
 
-def verify(keyfile, ciphertextfile):
+def verify(keyfile, ciphertextfile, hashFilename):
     """
     Decrypts the ciphertext stored in ciphertextfile using key from keyfile.
     Then, computes the hash of plaintext and compare computed hash against received hash.
@@ -64,6 +65,7 @@ def verify(keyfile, ciphertextfile):
     parameters:
     keyfile (string): name of file containing key
     ciphertextfile (string): name of file containing ciphertext
+    hashFilename (string): name of file containing hash 
     """
     # reads the ciphertext from ciphertextfile
     with open(ciphertextfile, 'r') as cipherfile:
@@ -93,15 +95,16 @@ def verify(keyfile, ciphertextfile):
         # store decrypted plaintext into message
         message += decrypted.decode("ascii")
 
-    hashFilename = "hash_" + ciphertextfile
     # store received hash from hashfilename into hashMsg
     with open(hashFilename,'r') as hashfile:
         hashMsg = hashfile.read()
     # computes the hash of the decrypted message
     hashDecryptMsg = hash(str.encode(message))
-    # compare the hash of decrypted message with received hash and output result
-    print('\nHash Equal: {}'.format(hashDecryptMsg == hashMsg))
+    # compare the hash of decrypted message with received hash
+    # returns 1 if received hash matches computed hash, else 0
+    if hashDecryptMsg == hashMsg:
+        return 1
+    else:
+        return 0
 
-if __name__ == "__main__":
-    verify('key.pem', 'ciphertext.txt')
         

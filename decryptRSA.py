@@ -1,5 +1,6 @@
 """
 Performs RSA decryption on ciphertext and compares decrypted plaintext against original plaintext.
+Return 1 if original message matches decrypted plaintext, else returns 0.
 """
 
 from Crypto.PublicKey import RSA
@@ -38,13 +39,14 @@ def bitstring_to_bytes(s):
     """
     return int(s, 2).to_bytes(len(s) // 8, byteorder='big')
 
-def decryptRSA(keyfile, ciphertextfile):
+def decryptRSA(keyfile, ciphertextfile, originFilename):
     """
     Decrypts the ciphertext stored in ciphertextfile using the key stored in keyfile
 
     parameters:
     keyfile (string): name of file containing key
     ciphertextfile (string): name of file containing ciphertext
+    originFilename (string): name of file containing original plaintext
     """
     # open ciphertextfile and read in ciphertext
     with open(ciphertextfile, 'r') as cipherfile:
@@ -74,11 +76,11 @@ def decryptRSA(keyfile, ciphertextfile):
         # store decrypted plaintext into message
         message += decrypted.decode("ascii")
 
-    originFilename = 'origin_' + ciphertextfile 
     # open original message and compare with decrypted message
     with open(originFilename,'r') as orifile:
         msg1 = orifile.read()
-        print('original msg == decrypted msg: {}'.format(msg1 == message))
-
-if __name__== "__main__":
-    decryptRSA('key.pem', 'ciphertext.txt')
+        # return 1 if original message matches decrypted plaintext, else 0
+        if msg1 == message:
+            return 1
+        else:
+            return 0

@@ -38,7 +38,7 @@ if (buyerValue == extractedBuyerValue) and (sellerValue == extractedSellerValue)
     decryptRSA2.decryptRSA2(buyerKey, buyerCipherFile)
     decryptRSA2.decryptRSA2(sellerKey, sellerCipherFile)
 else:
-    print("The information extracted does not match with the original cipher text")
+    print("The extracted ciphertext does not match the original ciphertext")
     print("Buyer Watermark: " + str(buyerValue))
     print("Extracted Buyer Watermark: " + str(extractedBuyerValue))
     print("Seller Watermark: " + str(sellerValue))
