@@ -58,7 +58,7 @@ def encryptRSA(keyfile, outfile):
     #msg1.replace("|","")
 
     # prompts user input for encryption
-    msg1 = str(input("Enter input: "))
+    msg1 = str(input("Enter Watermark: "))
     # replace certain symbols
     msg1 = msg1.replace("|", "")
     # encode the message into bytes
