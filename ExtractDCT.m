@@ -165,7 +165,7 @@ function dataExtractingDCT(bWatermarkFile,sWatermarkFile,wImgName)
     % Write the extracted buyer watermark into a file
     buyerExtractedFile = strcat("extracted_", bWatermarkFile);
     extractedBuyerInfoF = fopen(buyerExtractedFile, 'w');
-    fprintf(extractedBuyerInfoF,"Extracted Buyer's Watermark: %s\n",out_bstr_Buyer);
+    fprintf(extractedBuyerInfoF,"%s",out_bstr_Buyer);
     
     % Similar to the code above
     % Only difference is that this code extracts seller watermark
@@ -241,4 +241,4 @@ function dataExtractingDCT(bWatermarkFile,sWatermarkFile,wImgName)
 
     sellerExtractedFile = strcat("extracted_", sWatermarkFile);
     extractedSellerInfoF = fopen(sellerExtractedFile, 'w');
-    fprintf(extractedSellerInfoF,"Extracted Seller's Watermark: %s\n",out_bstr_Seller);
+    fprintf(extractedSellerInfoF,"%s",out_bstr_Seller);

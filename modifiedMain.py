@@ -183,7 +183,7 @@ if (userInput == '1'):
         # Open the file that contains encrypted seller's watermark and read it into sellerEncryptedWatermark
         with open(sellerCipherFile, 'r') as seller_cipher:
             sellerEncryptedWatermark = seller_cipher.read()
-            
+
         if (buyerEncryptedWatermark != extractedBuyerWatermark or sellerEncryptedWatermark != extractedSellerWatermark):
             # Handling the cases where the encrypted buyer's watermark does not match the extracted buyer's watermark
             # or the encrypted seller's watermark does not match the extracted seller's watermark
