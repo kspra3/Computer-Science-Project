@@ -1,9 +1,9 @@
 % Functions: To embed buyer and seller watermark into an image using DCT implementation
 % Parameters:
- - bWatermarkFile   - File containing buyer watermark
- - sWatermarkFile   - File containing seller watermark
- - oriImgFile       - Name of the original image file
- - wImgName         - Name for the watermarked image
+% - bWatermarkFile   - File containing buyer watermark
+% - sWatermarkFile   - File containing seller watermark
+% - oriImgFile       - Name of the original image file
+% - wImgName         - Name for the watermarked image
 % Return: A watermarked image with buyer and seller watermark
 
 function dataEmbeddingDCT(bWatermarkFile,sWatermarkFile,oriImgFile,wImgName)

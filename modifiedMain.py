@@ -60,7 +60,7 @@ if (userInput == '1'):
     Returns:
     1. Generated Key Pairs - saved into 'buyer.pem' file
     """
-    print("Generating Buyer's public and private key..")
+    print("Buyer generates the public and private key pairs")
     generateKeys.generateKeys(buyerKey)
     print("Buyer's public and private key pairs is generated\n")
 
@@ -71,10 +71,11 @@ if (userInput == '1'):
     1. Encrypted Watermark - saved into 'buyerCipher.txt' file
     2. Buyer's Hash - saved into 'hash_buyerCipher.txt' file
     """
-    print("User is prompted for Buyer's watermark.")
+    print("Buyer will now insert the watermark")
     encryptRSA.encryptRSA(buyerKey, buyerCipherFile)
-    print("Encryption of Buyer's watermark and generation of hash is being performed..")
-    print("Encryption and hashing complete.")
+    print("Buyer's watermark is successfully encrypted with buyer's private key")
+    print("Buyer's information hash is generated as well")
+    print("Buyer sends the encrypted watermark and information hash over to the seller")
     print("")
 
     # Seller Side
@@ -89,25 +90,25 @@ if (userInput == '1'):
        0 = Does not match
        1 = Matched
     """
-    print("Verification of Buyer's identity by Seller.")
+    print("Seller verifies buyer's identity")
     hashVerifyReturnValue = hashVerify.verify(buyerKey, buyerCipherFile, hashFilename)
 
     if hashVerifyReturnValue == 0:
         # Handling the case where the hash information does not belongs to the buyer
-        print("Received Buyer's hash DOES NOT MATCH hash of decrypted watermark.")
-        print("Program exiting.")
+        print("Buyer's hash information DOES NOT MATCH with the hash information produced by the encrypted watermark\n")
+        print("Program will now exit")
     else:
         # Handling the case where the hash information verifies the buyer's identity
-        print("Received Buyer's hash MATCHES hash of decrypted watermark.")
+        print("Buyer's hash information MATCHES with the hash information produced by the encrypted watermark\n")
 
         """
         Generates Public and Private Key Pairs
         Returns:
         1. Generated Key Pairs - saved into 'seller.pem' file
         """
-        print("Generating Seller's public and private key..")
+        print("Seller generates the public and private key pairs")
         generateKeys.generateKeys(sellerKey)
-        print("Seller's public and private key pairs is generated.")
+        print("Seller's public and private key pairs is generated\n")
 
         """
         Prompts Seller for watermark
@@ -116,20 +117,18 @@ if (userInput == '1'):
         1. Encrypted Watermark - saved into 'sellerCipher.txt' file
         2. Seller's Hash - saved into 'hash_sellerCipher.txt' file
         """
-        print("User is prompted for Seller's watermark.")
+        print("Seller will now insert the watermark")
         encryptRSA.encryptRSA(sellerKey, sellerCipherFile)
-        print("Encryption of Seller's watermark and generation of hash is being performed..")
-        print("Encryption and hashing complete.")
+        print("Seller's watermark is successfully encrypted with seller's private key")
+        print("Seller's information hash is generated as well\n")
 
-        print("Embedding of encrypted watermarks into image is performed by Seller")
-        print("User is prompted for name of image to be embedded.")
+        print("Seller embeds both encrypted watermarks into an image that the buyer wants to purchase")
+        print("Seller specify the name of the original image that the buyer wants to purchase")
         # Name of the original image
         oriImageName = str(input("Enter the name of the original image (Lenna.jpg): "))
-        print("User is prompted for name of watermarked image.")
+        print("Seller specify the name for the watermarked image that will be pass to the buyer")
         # Name of the watermarked image with buyer's and seller's encrypted watermark
         wImageName = str(input("Enter the name for the watermarked image (must include .jpg): "))
-
-        print("Watermark embedding starts")
 
         # Using exception handling to catch incorrect filename or file that does not exit
         try:
@@ -141,21 +140,23 @@ if (userInput == '1'):
             eng.EmbedDCT(bWatermarkFile, sWatermarkFile, oriImageName, wImageName, nargout=0)
         except:
             print(str(oriImageName) + " image file does not exist. Try (Lenna.jpg)")
-            print("Program exiting.")
+            print("Program will now exit")
             sys.exit()
 
+        print("Watermark embedding starts")
         print("Watermark is embedded\n")
 
-        print("Seller sends the watermarked image to trusted third party (TTP) along with the seller's watermark")
-        print("Buyer sends their watermark to TTP.")
+        print("Seller sends the watermarked image over to trusted third party along with the seller's watermark")
+        print("Buyer will also sends the the watermark over to trusted third party")
+        print("To verify that the watermarks that were embedded in the watermarked image belong to the buyer and the seller")
         print("")
 
         # Trusted Third Party Side
-        print("TTP receives the watermarked image and seller's watermark from the seller")
-        print("TTP receives buyer's watermark from the buyer")
-        print("TTP verifies that the watermarks in the image belong to the buyer and the seller\n")
+        print("Trusted third party receives the watermarked image and seller's watermark from the seller")
+        print("Trusted third party also receives buyer's watermark from the buyer")
+        print("Trusted third party checks whether the watermarks in the image belong to the buyer and the seller\n")
 
-        print("TTP extracts both watermarks from the watermarked image")
+        print("Trusted third party extracts both watermarks out of the watermarked image")
         """
         Extract both watermarks
         Returns:
@@ -163,7 +164,7 @@ if (userInput == '1'):
            0 = Does not match
            1 = Matched
         """
-        print("Begin extraction of watermarks")
+        print("Start extracting the watermarks")
         eng.ExtractDCT(bWatermarkFile, sWatermarkFile, wImageName, nargout=0)
         print("Watermarks are extracted\n")
 
@@ -186,13 +187,13 @@ if (userInput == '1'):
         if (buyerEncryptedWatermark != extractedBuyerWatermark or sellerEncryptedWatermark != extractedSellerWatermark):
             # Handling the cases where the encrypted buyer's watermark does not match the extracted buyer's watermark
             # or the encrypted seller's watermark does not match the extracted seller's watermark
-            print("Extracted watermarks DOES NOT MATCH with the embedded watermarks")
-            print("Program exiting")
+            print("Extracted watermarks DOES NOT MATCH with the watermarks embedded")
+            print("Program will now exit")
         else:
             # Handling the case where both encrypted buyer's and seller's watermark match the extracted buyer's and seller's watermark
-            print("Extracted watermarks MATCH with the embedded watermarks")
+            print("Extracted watermarks MATCH with the watermarks embedded\n")
 
-            print("TTP decrypts extracted watermark using Seller's and Buyer's Public Key")
+            print("Trusted third party decrypts the extracted watermark using Seller's and Buyer's Public Key")
             """
             RSA Decryption is done to the Encrypted Buyer's and Seller's Watermark using their respective Public Key
             Returns:
@@ -200,28 +201,28 @@ if (userInput == '1'):
                0 = Does not match
                1 = Matched
             """
-            print("Begin decryption of extracted encrypted watermarks of Buyer and Seller")
+            print("Start Decrypting the Extracted Encrypted Watermarks of Buyer and Seller")
             decryptRSAReturnArrayBuyer = decryptRSA.decryptRSA(buyerKey, buyerCipherFile, buyerOriginfilename)
             decryptRSAReturnArraySeller = decryptRSA.decryptRSA(sellerKey, sellerCipherFile, sellerOriginfilename)
-            print("Decryption complete.\n")
+            print("Decryption is done\n")
 
             if (decryptRSAReturnArrayBuyer[0] == 1 and decryptRSAReturnArraySeller[0] == 1):
                 # Handling the cases where the decrypted values match with the buyer's and seller's watermark
+                print("The decrypted values MATCH with the watermarks given by buyer and seller")
                 print("Buyer's Watermark: " + decryptRSAReturnArrayBuyer[1])
                 print("Extracted Buyer's Watermark: " + decryptRSAReturnArrayBuyer[2])
                 print("Seller's Watermark: " + decryptRSAReturnArraySeller[1])
                 print("Extracted Seller's Watermark: " + decryptRSAReturnArraySeller[2])
-                print("The decrypted values MATCH with the watermarks given by buyer and seller")
-                print("\nTTP will then send the watermarked image to the buyer\n")
-                print("End of program reached. Exiting..")
+                print("\nTrusted third party will then send the watermarked image to the buyer\n")
+                print("It has reached the end of the program and it will now exit")
             else:
                 # Handling the cases where the decrypted values does not match with the buyer's and seller's watermark
+                print("The decrypted values DOES NOT MATCH with the watermarks given by buyer and seller")
                 print("Buyer's Watermark: " + decryptRSAReturnArrayBuyer[1])
                 print("Extracted Buyer's Watermark: " + decryptRSAReturnArrayBuyer[2])
                 print("Seller's Watermark: " + decryptRSAReturnArraySeller[1])
                 print("Extracted Seller's Watermark: " + decryptRSAReturnArraySeller[2])
-                print("The decrypted values DOES NOT MATCH with the watermarks given by buyer and seller")
-                print("End of program reached. Exiting..")
+                print("\nProgram will now exit")
 
 elif (userInput == '2'):
     # Culprit verification
@@ -339,4 +340,4 @@ elif (userInput == '2'):
 
 else:
     # Handling the case where user input anything other than 1 or 2
-    print("Incorrect input, only 1 or 2 is accepted!")
+    print("Incorrect input!")
