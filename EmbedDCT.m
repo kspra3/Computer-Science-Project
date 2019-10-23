@@ -5,7 +5,6 @@
 % - oriImgFile       - Name of the original image file
 % - wImgName         - Name for the watermarked image
 % Return: A watermarked image with buyer and seller watermark
-
 function dataEmbeddingDCT(bWatermarkFile,sWatermarkFile,oriImgFile,wImgName)
     % Opens an existing file that contains watermark of buyer (bWatermarkFile) for reading purposes
     bWatermarkF = fopen(bWatermarkFile,'r');
@@ -20,7 +19,7 @@ function dataEmbeddingDCT(bWatermarkFile,sWatermarkFile,oriImgFile,wImgName)
     sWatermarkF = fopen(sWatermarkFile,'r');
     % Read the data from the open text file which contains the watermark of seller (sWatermarkF) and store it in sWatermark variable (string format)
     sWatermark = fscanf(sWatermarkF, '%s');
-    % BinaryStringSeller contains the watermark of the buyer from sWatermark
+    % BinaryStringSeller contains the watermark of the seller from sWatermark
     binaryStringSeller = sWatermark;
     % Contains the length of the seller watermark
     lengthBinaryStringSeller = length(binaryStringSeller);
@@ -85,17 +84,17 @@ function dataEmbeddingDCT(bWatermarkFile,sWatermarkFile,oriImgFile,wImgName)
 
         % Iterating through the row of the image
         for i = sp_row:ep_row
-            % If the index of that points to the character in the buyer watermark has not exceed the length of the buyer watermark
+            % If the index of that points to the character in the buyer watermark has exceed the length of the buyer watermark
             if index_Buyer_Watermark > lengthBinaryStringBuyer
                 % Increment the number of times the watermark has been embedded by 1
                 times_embed = times_embed + 1;
-                % Change the index pointer to the next character in the buyer watermark
+                % Change the index pointer to the first character in the buyer watermark
                 index_Buyer_Watermark = 1;
             end
 
             % Iterating through the column of the image
             for j = sp_col:ep_col
-                % If the index of that points to the character in the buyer watermark has not exceed the length of the buyer watermark
+                % If the index of that points to the character in the buyer watermark has exceed the length of the buyer watermark
                 if index_Buyer_Watermark > lengthBinaryStringBuyer
                     % Increment the number of times the watermark has been embedded by 1
                     times_embed = times_embed + 1;
@@ -150,9 +149,12 @@ function dataEmbeddingDCT(bWatermarkFile,sWatermarkFile,oriImgFile,wImgName)
         end
 
         blockCol = blockCol + block_size;
+        % Check if the current column of the block is reaching the end of the block
         if mod(blockCol, block_size*embed_per_size) == 1
+            % Switch to next row of the block
            blockRow = blockRow + block_size; 
         end
+        % Switch to next column of the block
         blockCol = mod(blockCol, block_size*embed_per_size);
     end
 
