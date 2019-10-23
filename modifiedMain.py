@@ -1,9 +1,9 @@
 """
-Main file that complies and runs all the python RSA encryption code and matlab DCT watermark embedding code in a single main.py script
-@purposes:
+Description: Main file that complies and runs all the python RSA encryption code and matlab DCT watermark embedding code in a single main.py script
+Functions:
 - To perform the whole simulation of buyer-seller scenario (Including trusted third party)
 - To track and verify the culprit who redistributed the purchased image without the permission of the content owner (Seller)
-:return: None
+Return: None
 """
 
 import matlab.engine

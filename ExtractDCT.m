@@ -191,10 +191,3 @@ function dataExtractingDCT(bWatermarkFile,sWatermarkFile,wImgName)
     sellerExtractedFile = strcat("extracted_", sWatermarkFile);
     extractedSellerInfoF = fopen(sellerExtractedFile, 'w');
     fprintf(extractedSellerInfoF,"%s",out_bstr2);
-    
-    if out_bstr1 == bstr1
-        disp("Extracted Buyer's Watermark == Embedded Buyer's Watermark")
-    end
-    if out_bstr2 == bstr2
-        disp("Extracted Seller's Watermark == Embedded Seller's Watermark")
-    end
