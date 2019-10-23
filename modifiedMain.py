@@ -13,6 +13,7 @@ import decryptRSA
 import generateKeys
 import hashVerify
 import sys
+import bitError
 
 cwd = os.path.dirname(os.path.abspath(__file__))
 eng = matlab.engine.start_matlab()
@@ -214,7 +215,20 @@ if (userInput == '1'):
                 print("Seller's Watermark: " + decryptRSAReturnArraySeller[1])
                 print("Extracted Seller's Watermark: " + decryptRSAReturnArraySeller[2])
                 print("\nTrusted third party will then send the watermarked image to the buyer\n")
-                print("It has reached the end of the program and it will now exit")
+                print("It has reached the end of the program and it will now exit\n")
+
+                print("Comparison between the quality of original image and watermarked image:")
+                readingPSNR = eng.getPSNR(oriImageName, wImageName, nargout=1)
+                readingSSIM = eng.getSSIM(oriImageName, wImageName, nargout=1)
+                print("PSNR Value: " + str(readingPSNR))
+                print("SSIM Value: " + str(readingSSIM * 100) + "%")
+                print("")
+
+                print("Comparison between the encrypted watermark and the extracted encrypted watermark using Bit Error Rate")
+                readingBitErrorRate_Buyer = bitError.bitError(buyerEncryptedWatermark, extractedBuyerWatermark)
+                readingBitErrorRate_Seller = bitError.bitError(sellerEncryptedWatermark, extractedSellerWatermark)
+                print("Bit Error Rate Value (Buyer): " + str(readingBitErrorRate_Buyer))
+                print("Bit Error Rate Value (Seller): " + str(readingBitErrorRate_Seller))
             else:
                 # Handling the cases where the decrypted values does not match with the buyer's and seller's watermark
                 print("The decrypted values DOES NOT MATCH with the watermarks given by buyer and seller")
@@ -223,6 +237,19 @@ if (userInput == '1'):
                 print("Seller's Watermark: " + decryptRSAReturnArraySeller[1])
                 print("Extracted Seller's Watermark: " + decryptRSAReturnArraySeller[2])
                 print("\nProgram will now exit")
+
+                print("Comparison between the quality of original image and watermarked image:")
+                readingPSNR = eng.getPSNR(oriImageName, wImageName, nargout=1)
+                readingSSIM = eng.getSSIM(oriImageName, wImageName, nargout=1)
+                print("PSNR Value: " + str(readingPSNR))
+                print("SSIM Value: " + str(readingSSIM * 100) + "%")
+                print("")
+
+                print("Comparison between the encrypted watermark and the extracted encrypted watermark using Bit Error Rate")
+                readingBitErrorRate_Buyer = bitError.bitError(buyerEncryptedWatermark, extractedBuyerWatermark)
+                readingBitErrorRate_Seller = bitError.bitError(sellerEncryptedWatermark, extractedSellerWatermark)
+                print("Bit Error Rate Value (Buyer): " + str(readingBitErrorRate_Buyer))
+                print("Bit Error Rate Value (Seller): " + str(readingBitErrorRate_Seller))
 
 elif (userInput == '2'):
     # Culprit verification
