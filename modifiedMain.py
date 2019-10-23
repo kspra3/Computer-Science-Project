@@ -229,16 +229,16 @@ elif (userInput == '2'):
     # Prompt the user to input the name of the watermarked image with buyer's and seller's encrypted watermark
     watermarkedImageName = str(input("Enter the name of the watermarked image (Lenna2.jpg): "))
 
+    print("Begin extraction of watermarks")
     # Using exception handling to catch incorrect filename or file that does not exit
     try:
         # This function extracts the both buyer's and seller's watermark from the watermarked image
         eng.ExtractDCT(bWatermarkFile, sWatermarkFile, watermarkedImageName, nargout=0)
     except:
         print("(" + str(watermarkedImageName) + ")" + " watermarked image does not exist. Try (Lenna2.jpg)")
-        print("Program will now exit")
+        print("Program exiting.")
         sys.exit()
 
-    print("Start extracting the watermarks")
     print("Watermarks are extracted\n")
 
     # Open the file that contains extracted encrypted buyer's watermark and read it into extractedBuyerWatermark
