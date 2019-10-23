@@ -169,49 +169,75 @@ function dataExtractingDCT(bWatermarkFile,sWatermarkFile,wImgName)
     
     % Similar to the code above
     % Only difference is that this code extracts seller watermark
+
+    % index of the current character for seller watermark
     index_Seller_Watermark = 1;
+
+    % Create an array containing 0 that has the size of the seller watermark
     bin_1_array_Seller = zeros(lengthBinaryStringSeller);
     bin_0_array_Seller = zeros(lengthBinaryStringSeller);
+
+    % times_embed keep tracks of the number of times that the watermark is extracted
     times_embed = 0;
+
+    % Seller watermark will be extracted with max_embed_times_Buyer number of times
     while times_embed < max_embed_times_Seller
         sp_row = blockRow;
         ep_row = blockRow + block_size - 1;
         sp_col = blockCol;
         ep_col = blockCol + block_size - 1;
 
+        % Handling the case if the starting row or col or ending row or col has exceeded the size of the image
         if (sp_row>img_size_w||ep_row>img_size_w||sp_col>img_size_h||ep_col>img_size_h)
             break;
         end
 
+        % Iterating through the row of the image
         for i = sp_row:ep_row
+            % Check if the index of that points to the character in the seller watermark has exceed the length of the seller watermark
             if index_Seller_Watermark > lengthBinaryStringSeller
+                % Increment the number of times the watermark has been extracted by 1
                 times_embed = times_embed + 1;
+                % Change the index pointer to the first character in the seller watermark
                 index_Seller_Watermark = 1;
             end
 
+            % Iterating through the column of the image
             for j = sp_col:ep_col
+                 % Check if the index of that points to the character in the seller watermark has exceed the length of the seller watermark
                 if index_Seller_Watermark > lengthBinaryStringSeller
+                    % Increment the number of times the watermark has been extracted by 1
                     times_embed = times_embed + 1;
+                    % Change the index pointer to the first character in the seller watermark
                     index_Seller_Watermark = 1;
                 end
 
+                % Determine whether the current position of the DCT coefficient is a negative or positive number
                 if DCTCOE(i,j) >= 0
+                    % floor function is used to convert the value in the current position of the dct coefficient to an integer value
+                    % It is then stored in currentDCTValue
                     currentDCTValue = floor(DCTCOE(i,j));
                     isNegative = 0;
                 else
+                    % ceil function is used to convert the value in the current position of the dct coefficient to an integer value
+                    % It is then stored in currentDCTValue
                     currentDCTValue = ceil(DCTCOE(i,j));
                     isNegative = 1;
                 end
 
+                % Converts currentDCTValue from numeric to string and stored it in currentDCTValue_str
                 currentDCTValue_str = num2str(currentDCTValue);
+                % Getting the right most digit of the currentDCTValue_str and stored it in rmost_digit
                 rmost_digit = extractAfter(currentDCTValue_str, length(currentDCTValue_str)-1);
+                % Converts rmost_digit from string to double
                 rmost_digit = str2double(rmost_digit);
 
+                % Check if the right most digit falls within the range of 0 ~ 4 and 5 ~ 9
                 if (0 <= rmost_digit) && (rmost_digit <= 4)
-                    % 0 is encoded
+                    % Counter for 0 is incremented by 1 at the current position
                     bin_0_array_Seller(index_Seller_Watermark) = bin_0_array_Seller(index_Seller_Watermark) + 1;
                 else
-                    % 1 is encoded
+                    % Counter for 1 is incremented by 1 at the current position
                     bin_1_array_Seller(index_Seller_Watermark) = bin_1_array_Seller(index_Seller_Watermark) + 1;
                 end
 
@@ -220,9 +246,12 @@ function dataExtractingDCT(bWatermarkFile,sWatermarkFile,wImgName)
         end
 
         blockCol = blockCol + block_size;
+        % Check if the current column of the block is reaching the end of the block
         if mod(blockCol, block_size*embed_per_size) == 1
-           blockRow = blockRow + block_size; 
+            % Switch to next row of the block
+            blockRow = blockRow + block_size;
         end
+        % Switch to next column of the block
         blockCol = mod(blockCol, block_size*embed_per_size);
     end
 
@@ -232,6 +261,7 @@ function dataExtractingDCT(bWatermarkFile,sWatermarkFile,wImgName)
         one_count = bin_1_array_Seller(i);
         zero_count = bin_0_array_Seller(i);
 
+        % Check if occurrence of 1 is greater than occurrence of 0
         if one_count > zero_count
             out_bstr_Seller = append(out_bstr_Seller,'1');
         else
@@ -239,6 +269,7 @@ function dataExtractingDCT(bWatermarkFile,sWatermarkFile,wImgName)
         end
     end
 
+    % Write the extracted seller watermark into a file
     sellerExtractedFile = strcat("extracted_", sWatermarkFile);
     extractedSellerInfoF = fopen(sellerExtractedFile, 'w');
     fprintf(extractedSellerInfoF,"%s",out_bstr_Seller);

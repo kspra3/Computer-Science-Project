@@ -160,40 +160,68 @@ function dataEmbeddingDCT(bWatermarkFile,sWatermarkFile,oriImgFile,wImgName)
 
     % Similar to the code above
     % Only difference is that this code does watermark embedding for the seller watermark using DCT
+
+    % index of the current character for seller watermark
     index_Seller_Watermark = 1;
+
+    % times_embed keep tracks of the number of times that the watermark is embedded
     times_embed = 0;
+
+    % Seller watermark will be embedded with max_embed_times_Buyer number of times
     while times_embed < max_embed_times_Seller
         sp_row = blockRow;
         ep_row = blockRow + block_size - 1;
         sp_col = blockCol;
         ep_col = blockCol + block_size - 1;
+
+        % Handling the case if the starting row or col or ending row or col has exceeded the size of the image
         if (sp_row>img_size_w||ep_row>img_size_w||sp_col>img_size_h||ep_col>img_size_h)
             break;
         end
 
+        % Iterating through the row of the image
         for i = sp_row:ep_row
+            % If the index of that points to the character in the seller watermark has exceed the length of the seller watermark
             if index_Seller_Watermark > lengthBinaryStringSeller
+                % Increment the number of times the watermark has been embedded by 1
                 times_embed = times_embed + 1;
+                % Change the index pointer to the first character in the seller watermark
                 index_Seller_Watermark = 1;
             end
+
+            % Iterating through the column of the image
             for j = sp_col:ep_col
+                % If the index of that points to the character in the seller watermark has exceed the length of the seller watermark
                 if index_Seller_Watermark > lengthBinaryStringSeller
+                    % Increment the number of times the watermark has been embedded by 1
                     times_embed = times_embed + 1;
+                    % Change the index pointer to the next character in the seller watermark
                     index_Seller_Watermark = 1;
                 end
 
+                % Determine whether the current position of the DCT coefficient is a negative or positive number
                 if DCTCOE(i,j) >= 0
+                    % floor function is used to convert the value in the current position of the dct coefficient to an integer value
+                    % It is then stored in currentDCTValue
                     currentDCTValue = floor(DCTCOE(i,j));
                     isNegative = 0;
                 else
+                    % ceil function is used to convert the value in the current position of the dct coefficient to an integer value
+                    % It is then stored in currentDCTValue
                     currentDCTValue = ceil(DCTCOE(i,j));
                     isNegative = 1;
                 end
+
+                % Converts currentDCTValue from numeric to string and stored it in currentDCTValue_str
                 currentDCTValue_str = num2str(currentDCTValue);
+                % Getting the right most digit of the currentDCTValue_str and stored it in rmost_digit
                 rmost_digit = extractAfter(currentDCTValue_str, length(currentDCTValue_str)-1);
+                % Converts rmost_digit from string to double
                 rmost_digit = str2double(rmost_digit);
 
+                % Check if the the current index of the character in seller watermark == 49 (1)
                 if binaryStringSeller(index_Seller_Watermark) == 49
+                    % Check if the value in the current position of the dct coefficient is negative
                     if isNegative == 0
                         diff = rmost_digit - 7;
                         DCTCOE(i,j) = DCTCOE(i,j) - diff;
@@ -201,7 +229,9 @@ function dataEmbeddingDCT(bWatermarkFile,sWatermarkFile,oriImgFile,wImgName)
                         diff = -rmost_digit + 7;
                         DCTCOE(i,j) = DCTCOE(i,j) - diff;
                     end
+                % Check if the the current index of the character in seller watermark == 48 (0)
                 elseif binaryStringSeller(index_Seller_Watermark) == 48
+                    % Check if the value in the current position of the dct coefficient is negative
                     if isNegative == 0
                         diff = rmost_digit - 2;
                         DCTCOE(i,j) = DCTCOE(i,j) - diff;
@@ -216,9 +246,12 @@ function dataEmbeddingDCT(bWatermarkFile,sWatermarkFile,oriImgFile,wImgName)
         end
 
         blockCol = blockCol + block_size;
+        % Check if the current column of the block is reaching the end of the block
         if mod(blockCol, block_size*embed_per_size) == 1
+            % Switch to next row of the block
            blockRow = blockRow + block_size; 
         end
+        % Switch to next column of the block
         blockCol = mod(blockCol, block_size*embed_per_size);
     end
 
