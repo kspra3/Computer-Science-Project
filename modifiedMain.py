@@ -35,7 +35,7 @@ Returns:
 print("Buyer will now insert the watermark")
 encryptRSA.encryptRSA(buyerKey, buyerCipherFile)
 print("Buyer's watermark is successfully encrypted with buyer's private key")
-print("Buyer's information hash is generated as well")
+print("Buyer's information hash is generated")
 print("Buyer sends the encrypted watermark and information hash over to the seller")
 print("################################################################################################################################")
 
