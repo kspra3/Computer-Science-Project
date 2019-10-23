@@ -61,7 +61,7 @@ def decryptRSA(keyfile, ciphertextfile, originFilename):
     # total number of chunks is computed
     chunks = math.ceil(len(newCipher) / 1376)
     # decrypted plaintext is stored into message
-    message = ""
+    decryptedMessage = ""
 
     # decrypt one chunk at a time
     for i in range(chunks):
@@ -74,13 +74,22 @@ def decryptRSA(keyfile, ciphertextfile, originFilename):
         #decrypts and decodes the Base64 encoded bytes object
         decrypted = decrypt(b64decode(encrypted), pubkey)
         # store decrypted plaintext into message
-        message += decrypted.decode("ascii")
+        decryptedMessage += decrypted.decode("ascii")
 
+    outputArray = [None] * 3
     # open original message and compare with decrypted message
     with open(originFilename,'r') as orifile:
-        msg1 = orifile.read()
-        # return 1 if original message matches decrypted plaintext, else 0
-        if msg1 == message:
-            return 1
+        originalMessage = orifile.read()
+        # Store 1 into the first index of the outputArray if original message matches decrypted plaintext, else 0
+        if originalMessage == decryptedMessage:
+            outputArray[0] = 1
         else:
-            return 0
+            outputArray[0] = 0
+
+        # Store the original message into the second index of the outputArray
+        outputArray[1] = str(originalMessage)
+        # Store the decrypted message into the third index of the outputArray
+        outputArray[2] = str(decryptedMessage)
+
+        # Return the outputArray
+        return outputArray

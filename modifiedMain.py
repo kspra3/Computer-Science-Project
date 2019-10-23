@@ -164,19 +164,25 @@ if (userInput == '1'):
                1 = Matched
             """
             print("Start Decrypting the Extracted Encrypted Watermarks of Buyer and Seller")
-            decryptRSAReturnValueBuyer = decryptRSA.decryptRSA(buyerKey, buyerCipherFile, buyerOriginfilename)
-            decryptRSAReturnValueSeller = decryptRSA.decryptRSA(sellerKey, sellerCipherFile, sellerOriginfilename)
+            decryptRSAReturnArrayBuyer = decryptRSA.decryptRSA(buyerKey, buyerCipherFile, buyerOriginfilename)
+            decryptRSAReturnArraySeller = decryptRSA.decryptRSA(sellerKey, sellerCipherFile, sellerOriginfilename)
             print("Decryption is done\n")
 
-            if (decryptRSAReturnValueBuyer == 1 and decryptRSAReturnValueSeller == 1):
-                print("The decrypted values MATCH with the watermarks given by buyer and seller\n")
-
-                print("Trusted third party will then send the watermarked image to the buyer")
+            if (decryptRSAReturnArrayBuyer[0] == 1 and decryptRSAReturnArraySeller[0] == 1):
+                print("The decrypted values MATCH with the watermarks given by buyer and seller")
+                print("Buyer's Watermark: " + decryptRSAReturnArrayBuyer[1])
+                print("Extracted Buyer's Watermark: " + decryptRSAReturnArrayBuyer[2])
+                print("Seller's Watermark: " + decryptRSAReturnArraySeller[1])
+                print("Extracted Seller's Watermark: " + decryptRSAReturnArraySeller[2])
+                print("\nTrusted third party will then send the watermarked image to the buyer\n")
                 print("It has reached the end of the program and it will now exit")
             else:
-                print("The decrypted values DOES NOT MATCH with the watermarks given by buyer and seller\n")
-
-                print("Program will now exit")
+                print("The decrypted values DOES NOT MATCH with the watermarks given by buyer and seller")
+                print("Buyer's Watermark: " + decryptRSAReturnArrayBuyer[1])
+                print("Extracted Buyer's Watermark: " + decryptRSAReturnArrayBuyer[2])
+                print("Seller's Watermark: " + decryptRSAReturnArraySeller[1])
+                print("Extracted Seller's Watermark: " + decryptRSAReturnArraySeller[2])
+                print("\nProgram will now exit")
 
 elif (userInput == '2'):
     watermarkedImageName = str(input("Enter the name of the watermarked image (Lenna2.jpg): "))
@@ -215,17 +221,17 @@ elif (userInput == '2'):
             sys.exit()
     
     if (buyerEncryptedWatermark != extractedBuyerWatermark or sellerEncryptedWatermark != extractedSellerWatermark):
-        print("The extracted ciphertext does not match the original ciphertext")
+        print("\nThe extracted ciphertext does not match the original ciphertext")
         print("Buyer Watermark: " + str(buyerEncryptedWatermark))
         print("Extracted Buyer Watermark: " + str(extractedBuyerWatermark))
         print("Seller Watermark: " + str(sellerEncryptedWatermark))
         print("Extracted Seller Watermark: " + str(extractedSellerWatermark))
-        print("Program will now exit")
+        print("\nProgram will now exit")
     else:
         
         buyerWatermarkFN = str(input("Enter the filename that contains Buyer's Watermark (origin_buyerCipher.txt): "))
         try:
-            decryptRSAReturnValueBuyer = decryptRSA.decryptRSA(buyerKey, buyerCipherFile, buyerWatermarkFN)
+            decryptRSAReturnArrayBuyer = decryptRSA.decryptRSA(buyerKey, buyerCipherFile, buyerWatermarkFN)
         except:
             print("(" + str(buyerWatermarkFN) + ")" + " buyer's watermark file does not exist. Try (origin_buyerCipher.txt)")
             print("Program will now exit")
@@ -233,23 +239,31 @@ elif (userInput == '2'):
 
         sellerWatermarkFN = str(input("Enter the filename that contains Seller's Watermark (origin_sellerCipher.txt): "))
         try:
-            decryptRSAReturnValueSeller = decryptRSA.decryptRSA(sellerKey, sellerCipherFile, sellerWatermarkFN)
+            decryptRSAReturnArraySeller = decryptRSA.decryptRSA(sellerKey, sellerCipherFile, sellerWatermarkFN)
         except:
             print("(" + str(sellerWatermarkFN) + ")" + " seller's watermark file does not exist. Try (origin_sellerCipher.txt)")
             print("Program will now exit")
             sys.exit()
             
-        if (decryptRSAReturnValueBuyer == 1):
+        if (decryptRSAReturnArrayBuyer[0] == 1):
             print("\nThe decrypted values MATCH with the suspected buyer's watermark")
+            print("Suspected buyer's watermark: " + str(decryptRSAReturnArrayBuyer[1]))
+            print("Extracted watermark: " + str(decryptRSAReturnArrayBuyer[2]))
             print("The buyer with this watermark is the culprit who redistributed the image without the permission of the content owner")
         else:
             print("\nThe decrypted values DOES NOT MATCH with the suspected buyer's watermark")
+            print("Suspected buyer's watermark: " + str(decryptRSAReturnArrayBuyer[1]))
+            print("Extracted watermark: " + str(decryptRSAReturnArrayBuyer[2]))
             print("The suspected buyer is not the one who redistributed the image without the permission of the content owner")
-        if (decryptRSAReturnValueSeller == 1):
+        if (decryptRSAReturnArraySeller[0] == 1):
             print("\nThe decrypted values MATCH with the seller's watermark")
+            print("Seller's watermark: " + str(decryptRSAReturnArraySeller[1]))
+            print("Extracted watermark: " + str(decryptRSAReturnArraySeller[2]))
             print("Proves that the seller is the owner of this image")
         else:
             print("\nThe decrypted values DOES NOT MATCH with the seller's watermark")
+            print("Seller's watermark: " + str(decryptRSAReturnArraySeller[1]))
+            print("Extracted watermark: " + str(decryptRSAReturnArraySeller[2]))
             print("The seller is not the owner of this image")
             
         print("\nThe program has reached the end and it will now exit")
