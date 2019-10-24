@@ -296,6 +296,13 @@ elif (userInput == '2'):
         print("Extracted Buyer Watermark: " + str(extractedBuyerWatermark))
         print("Seller Watermark: " + str(sellerEncryptedWatermark))
         print("Extracted Seller Watermark: " + str(extractedSellerWatermark))
+
+        print("\nComparison between the encrypted watermark and the extracted encrypted watermark using Bit Error Rate")
+        readingBitErrorRate_Buyer = bitError.bitError(buyerEncryptedWatermark, extractedBuyerWatermark)
+        readingBitErrorRate_Seller = bitError.bitError(sellerEncryptedWatermark, extractedSellerWatermark)
+        print("Bit Error Rate Value (Buyer): " + str(readingBitErrorRate_Buyer))
+        print("Bit Error Rate Value (Seller): " + str(readingBitErrorRate_Seller))
+
         print("\nProgram exiting.")
     else:
         # Handling the case where both encrypted buyer's and seller's watermark match the extracted buyer's and seller's watermark
