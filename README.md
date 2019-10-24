@@ -101,4 +101,4 @@ For more information on installing the matlab.engine package, visit [here](https
 ## Platform and OS independence:
 - Our program works for any operating system as long as it has access to the softwares and modules that we have specified under the software requirement and the libraries/ modules sections.
 ## Security:
-- Asymmetric Rivest-Shamir-Adleman (RSA) encryption is used in our program to preserves the non-framing and non-repudation security properties that the buyer-seller watermarking protocol possessed and the confidentiality of buyer's and seller's watermark that is embedded within the watermarked image.
+- Asymmetric Rivest-Shamir-Adleman (RSA) encryption is used in our program to preserves the non-framing and non-repudation security properties that the buyer-seller watermarking protocol possessed and the confidentiality of buyer's and seller's watermarks that were embedded within the watermarked image.
