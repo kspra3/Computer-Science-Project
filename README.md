@@ -33,7 +33,7 @@
 
 # Technical User Guide
 
-## Required programs
+## Software requirements
 The python interpreter version 3.7 64-bit and Matlab release R2019a is needed to run the program and install required libraries. 
 
 The 64-bit python interpreter is required for everything to work, a 32-bit version will not work. 
@@ -79,3 +79,11 @@ system('python setup.py install')
 ```
 
 For more information on installing the matlab.engine package, visit [here](https://au.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html).
+
+# Limitations of the code
+- Discrete Cosine Transform (DCT) watermark embedding technique used is not robust against image resizing.
+  - Hence, it restricts us from using Social Networking Services that resizes the image.
+# Potential Improvements and Further Work
+- Apply Discrete Fourier Transform (DFT) to solve the resizing vulnerability that is present in our program in order to allow our program to be used across all Social Networking Services.
+- Implement Homomorphic Encryption to allows Encrypt Then Insert method to be used. Hence, this preserves the privacy and confidentiality of the buyer's and the seller's watermark.
+
