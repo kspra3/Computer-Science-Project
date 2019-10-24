@@ -16,7 +16,7 @@
 
 6. Program asks the user to enter the name for the watermarked image.
 
-7. Program generates watermarked image that has the given by the user with buyer and seller watermarks embedded into it.
+7. Program generates watermarked image that has the name given by the user along with the buyer and seller watermarks embedded into it.
 
 ### If the user chooses 2 (verification of the culprit)
 3. Program promts the user (Seller) for the name of watermarked image.
