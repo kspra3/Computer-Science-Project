@@ -2,7 +2,7 @@
 
 # End User Guide
 
-## Guideline/Step to run the program
+## Guidelines/ Steps to run the program
 1. Run main.py
 
 2. Program prompts the user to choose between 1 (whole simulation of buyer-seller scenario) or 2 (verfication of the culprit).
@@ -34,11 +34,11 @@
 # Technical User Guide
 
 ## Software requirements
-The python interpreter version 3.7 64-bit and Matlab release R2019a is needed to run the program and install required libraries. 
+1. Matlab release R2019a
 
-The 64-bit python interpreter is required for everything to work, a 32-bit version will not work. 
+2. The python interpreter version 3.7 64-bit is needed to run the program and install required libraries (The 64-bit python interpreter is required for everything to work, a 32-bit version will not work). 
 
-## Libraries
+## Libraries/ Modules
 The following libraries are not part of the standard python library and needed to be download separately.
 
 ### pycryptodome
@@ -83,10 +83,21 @@ For more information on installing the matlab.engine package, visit [here](https
 # Limitations of the code
 - Discrete Cosine Transform (DCT) watermark embedding technique used in our program is not robust against image resizing. Hence, it restricts us from using Social Networking Services that resizes the image.
 
-- Size of the watermark to be inserted relies on the size of the image given. Our program will not be able to embed buyer's and seller's watermark if the sum of the size of both watermarks is greater than the size of the image.
+- Size of the watermark to be inserted heavily relies on the size of the image given. Our program will not be able to embeds the buyer's and the seller's watermark if the summation of the size of both watermarks is greater than the size of the image.
 
 # Potential Improvements and Further Work
 - Apply Discrete Fourier Transform (DFT) to solve the resizing vulnerability that is present in our program in order to allow our program to be used across all Social Networking Services.
 
 - Implement Homomorphic Encryption to allows Encrypt Then Insert method to be used. Hence, this preserves the privacy and confidentiality of the buyer's and the seller's watermark as both buyer and seller could perform mathematical operation such as inserting their watermark after they have encrypted the components within the image.
 
+# Considerations:
+## Robustness:
+- User's inputs are properly checked and handled using IF-ElSE condition.
+- Exception handling is done in order to detect incorrect filename that is provided by the user using TRY-EXCEPT method.
+## Scalability:
+- Our program is able to run watermark embedding and extracting for image of any size.
+- However, the size of the watermark to be inserted by the buyer and seller heavily relies on the size of the image given.
+## Platform and OS independence:
+- Our program works for any operating system as long as it has access to the softwares and modules that we have specified under the software requirement and libraries/ modules section.
+## Security:
+- Asymmetric Rivest-Shamir-Adleman (RSA) encryption is used in our program to preserves the non-framing and non-repudation security properties that the buyer-seller protocol has.
