@@ -83,14 +83,14 @@ For more information on installing the matlab.engine package, visit [here](https
 # Limitations of the code
 - Discrete Cosine Transform (DCT) watermark embedding technique used in our program is not robust against image resizing. Hence, it restricts us from using Social Networking Services that resizes the image.
 
-- Size of the watermark to be inserted heavily depends on the size of the image given. Our program will not be able to embeds the buyer's and the seller's watermark if the summation of the size of both watermarks is greater than the size of the image. However, this can be easily fixed by using a image with large size.
+- Size of the watermark to be inserted heavily depends on the size of the image given. Our program will not be able to embeds the buyer's and the seller's watermark if the summation of the size of both watermarks is greater than the size of the image. However, this can be easily fixed by using a image with larger size.
 
 - Reliance in the involvement of trusted third party in order to verify watermarks embbeded in the watermarked image belongs to the seller and the buyer.
 
 # Potential Improvements and Further Work
 - Apply Discrete Fourier Transform (DFT) to solve the resizing vulnerability in order to allow our program to be used across all Social Networking Services.
 
-- Implement Homomorphic Encryption to allows Encrypt Then Insert method to be used. Hence, this preserves the privacy and confidentiality of the buyer's and the seller's watermark as both buyer and seller could perform mathematical operation such as inserting their watermark after they have encrypted the components within the image.
+- Implement Homomorphic Encryption to allows Encrypt Then Insert method to be used. Hence, this preserves the privacy and confidentiality of the buyer's and the seller's watermark as both buyer and seller could perform operations such as inserting their watermark after they have encrypted the components within the image.
 
 # Considerations:
 ## Robustness:
