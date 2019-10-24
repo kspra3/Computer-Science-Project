@@ -5,9 +5,7 @@
 ## Guideline/Step to run the program
 1. Run main.py
 
-2. Program prompts the user to choose between 1 or 2.
-   1 - represents the whole simulation of buyer-seller scenario
-   2 - represents the verfication of the culprit
+2. Program prompts the user to choose between 1 (whole simulation of buyer-seller scenario) or 2 (verfication of the culprit).
    
 ### If the user chooses 1 (whole simulation of buyer-seller scenario)
 3. Program prompts the user for buyer's watermark.
