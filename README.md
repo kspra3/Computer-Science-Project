@@ -81,9 +81,12 @@ system('python setup.py install')
 For more information on installing the matlab.engine package, visit [here](https://au.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html).
 
 # Limitations of the code
-- Discrete Cosine Transform (DCT) watermark embedding technique used is not robust against image resizing.
-  - Hence, it restricts us from using Social Networking Services that resizes the image.
+- Discrete Cosine Transform (DCT) watermark embedding technique used in our program is not robust against image resizing. Hence, it restricts us from using Social Networking Services that resizes the image.
+
+- Size of the watermark to be inserted relies on the size of the image given. Our program will not be able to embed buyer's and seller's watermark if the sum of the size of both watermarks is greater than the size of the image.
+
 # Potential Improvements and Further Work
 - Apply Discrete Fourier Transform (DFT) to solve the resizing vulnerability that is present in our program in order to allow our program to be used across all Social Networking Services.
-- Implement Homomorphic Encryption to allows Encrypt Then Insert method to be used. Hence, this preserves the privacy and confidentiality of the buyer's and the seller's watermark.
+
+- Implement Homomorphic Encryption to allows Encrypt Then Insert method to be used. Hence, this preserves the privacy and confidentiality of the buyer's and the seller's watermark as both buyer and seller could perform mathematical operation such as inserting their watermark after they have encrypted the components within the image.
 
