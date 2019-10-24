@@ -97,7 +97,7 @@ if (userInput == '1'):
     if hashVerifyReturnValue == 0:
         # Handling the case where the hash information does not belongs to the buyer
         print("Buyer's hash information DOES NOT MATCH with the hash information produced by the encrypted watermark\n")
-        print("Program will now exit")
+        print("Program exiting.")
     else:
         # Handling the case where the hash information verifies the buyer's identity
         print("Buyer's hash information MATCHES with the hash information produced by the encrypted watermark\n")
@@ -141,7 +141,7 @@ if (userInput == '1'):
             eng.EmbedDCT(bWatermarkFile, sWatermarkFile, oriImageName, wImageName, nargout=0)
         except:
             print(str(oriImageName) + " image file does not exist. Try (Lenna.jpg)")
-            print("Program will now exit")
+            print("Program exiting.")
             sys.exit()
 
         print("Watermark embedding starts")
@@ -189,7 +189,7 @@ if (userInput == '1'):
             # Handling the cases where the encrypted buyer's watermark does not match the extracted buyer's watermark
             # or the encrypted seller's watermark does not match the extracted seller's watermark
             print("Extracted watermarks DOES NOT MATCH with the watermarks embedded")
-            print("Program will now exit")
+            print("Program exiting.")
         else:
             # Handling the case where both encrypted buyer's and seller's watermark match the extracted buyer's and seller's watermark
             print("Extracted watermarks MATCH with the watermarks embedded\n")
@@ -236,20 +236,7 @@ if (userInput == '1'):
                 print("Extracted Buyer's Watermark: " + decryptRSAReturnArrayBuyer[2])
                 print("Seller's Watermark: " + decryptRSAReturnArraySeller[1])
                 print("Extracted Seller's Watermark: " + decryptRSAReturnArraySeller[2])
-                print("\nProgram will now exit")
-
-                print("Comparison between the quality of original image and watermarked image:")
-                readingPSNR = eng.getPSNR(oriImageName, wImageName, nargout=1)
-                readingSSIM = eng.getSSIM(oriImageName, wImageName, nargout=1)
-                print("PSNR Value: " + str(readingPSNR))
-                print("SSIM Value: " + str(readingSSIM * 100) + "%")
-                print("")
-
-                print("Comparison between the encrypted watermark and the extracted encrypted watermark using Bit Error Rate")
-                readingBitErrorRate_Buyer = bitError.bitError(buyerEncryptedWatermark, extractedBuyerWatermark)
-                readingBitErrorRate_Seller = bitError.bitError(sellerEncryptedWatermark, extractedSellerWatermark)
-                print("Bit Error Rate Value (Buyer): " + str(readingBitErrorRate_Buyer))
-                print("Bit Error Rate Value (Seller): " + str(readingBitErrorRate_Seller))
+                print("\nProgram exiting.")
 
 elif (userInput == '2'):
     # Culprit verification
@@ -286,7 +273,7 @@ elif (userInput == '2'):
             buyerEncryptedWatermark = buyer_cipher.read()
     except:
         print("(" + str(buyerEncryptedWatermarkFN) + ")" + " buyer's encrypted watermark file does not exist. Try (buyerCipher.txt)")
-        print("Program will now exit")
+        print("Program exiting.")
         sys.exit()
 
     # filename of the file that contains the encrypted seller's watermark
@@ -298,7 +285,7 @@ elif (userInput == '2'):
             sellerEncryptedWatermark = seller_cipher.read()
     except:
         print("(" + str(sellerEncryptedWatermarkFN) + ")" + " seller's encrypted watermark file does not exist. Try (sellerCipher.txt)")
-        print("Program will now exit")
+        print("Program exiting.")
         sys.exit()
     
     if (buyerEncryptedWatermark != extractedBuyerWatermark or sellerEncryptedWatermark != extractedSellerWatermark):
@@ -309,7 +296,7 @@ elif (userInput == '2'):
         print("Extracted Buyer Watermark: " + str(extractedBuyerWatermark))
         print("Seller Watermark: " + str(sellerEncryptedWatermark))
         print("Extracted Seller Watermark: " + str(extractedSellerWatermark))
-        print("\nProgram will now exit")
+        print("\nProgram exiting.")
     else:
         # Handling the case where both encrypted buyer's and seller's watermark match the extracted buyer's and seller's watermark
 
@@ -321,7 +308,7 @@ elif (userInput == '2'):
             decryptRSAReturnArrayBuyer = decryptRSA.decryptRSA(buyerKey, buyerCipherFile, buyerWatermarkFN)
         except:
             print("(" + str(buyerWatermarkFN) + ")" + " buyer's watermark file does not exist. Try (origin_buyerCipher.txt)")
-            print("Program will now exit")
+            print("Program exiting.")
             sys.exit()
 
         # filename of the file that contains the seller's watermark
@@ -332,7 +319,7 @@ elif (userInput == '2'):
             decryptRSAReturnArraySeller = decryptRSA.decryptRSA(sellerKey, sellerCipherFile, sellerWatermarkFN)
         except:
             print("(" + str(sellerWatermarkFN) + ")" + " seller's watermark file does not exist. Try (origin_sellerCipher.txt)")
-            print("Program will now exit")
+            print("Program exiting.")
             sys.exit()
 
         print("Start Decrypting the Extracted Encrypted Watermarks of Buyer and Seller")
