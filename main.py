@@ -312,8 +312,7 @@ elif (userInput == '2'):
             # This function decrypt the extracted encrypted buyer's watermark to extracted buyer's watermark
             decryptRSAReturnArrayBuyer = decryptRSA.decryptRSA(buyerKey, buyerExtractedFile, buyerWatermarkFN)
         except:
-            print("(" + str(
-                buyerWatermarkFN) + ")" + " buyer's watermark file does not exist. Try (origin_buyerCipher.txt)")
+            print("(" + str(buyerWatermarkFN) + ")" + " buyer's watermark file does not exist. Try (origin_buyerCipher.txt)")
             print("Program exiting.")
             sys.exit()
 
@@ -333,6 +332,12 @@ elif (userInput == '2'):
             print("Extracted watermark: " + str(decryptRSAReturnArrayBuyer[2]))
             print("The suspected buyer is not the one who redistributed the image without the permission of the content owner")
 
+        print("\nComparison between the encrypted watermark and the extracted encrypted watermark using Bit Error Rate")
+        readingBitErrorRate_Buyer = bitError.bitError(buyerEncryptedWatermark, extractedBuyerWatermark)
+        readingBitErrorRate_Seller = bitError.bitError(sellerEncryptedWatermark, extractedSellerWatermark)
+        print("Bit Error Rate Value (Buyer): " + str(readingBitErrorRate_Buyer))
+        print("Bit Error Rate Value (Seller): " + str(readingBitErrorRate_Seller))
+
         print("\nThe program has reached the end and it will now exit")
     elif (buyerEncryptedWatermark != extractedBuyerWatermark and sellerEncryptedWatermark == extractedSellerWatermark):
         # filename of the file that contains the seller's watermark
@@ -343,8 +348,7 @@ elif (userInput == '2'):
             # This function decrypt the extracted encrypted seller's watermark to extracted seller's watermark
             decryptRSAReturnArraySeller = decryptRSA.decryptRSA(sellerKey, sellerExtractedFile, sellerWatermarkFN)
         except:
-            print("(" + str(
-                sellerWatermarkFN) + ")" + " seller's watermark file does not exist. Try (origin_sellerCipher.txt)")
+            print("(" + str(sellerWatermarkFN) + ")" + " seller's watermark file does not exist. Try (origin_sellerCipher.txt)")
             print("Program exiting.")
             sys.exit()
 
@@ -363,6 +367,12 @@ elif (userInput == '2'):
             print("Seller's watermark: " + str(decryptRSAReturnArraySeller[1]))
             print("Extracted watermark: " + str(decryptRSAReturnArraySeller[2]))
             print("The seller is not the owner of this image")
+
+        print("\nComparison between the encrypted watermark and the extracted encrypted watermark using Bit Error Rate")
+        readingBitErrorRate_Buyer = bitError.bitError(buyerEncryptedWatermark, extractedBuyerWatermark)
+        readingBitErrorRate_Seller = bitError.bitError(sellerEncryptedWatermark, extractedSellerWatermark)
+        print("Bit Error Rate Value (Buyer): " + str(readingBitErrorRate_Buyer))
+        print("Bit Error Rate Value (Seller): " + str(readingBitErrorRate_Seller))
 
         print("\nThe program has reached the end and it will now exit")
     else:
@@ -417,7 +427,13 @@ elif (userInput == '2'):
             print("Seller's watermark: " + str(decryptRSAReturnArraySeller[1]))
             print("Extracted watermark: " + str(decryptRSAReturnArraySeller[2]))
             print("The seller is not the owner of this image")
-            
+
+        print("\nComparison between the encrypted watermark and the extracted encrypted watermark using Bit Error Rate")
+        readingBitErrorRate_Buyer = bitError.bitError(buyerEncryptedWatermark, extractedBuyerWatermark)
+        readingBitErrorRate_Seller = bitError.bitError(sellerEncryptedWatermark, extractedSellerWatermark)
+        print("Bit Error Rate Value (Buyer): " + str(readingBitErrorRate_Buyer))
+        print("Bit Error Rate Value (Seller): " + str(readingBitErrorRate_Seller))
+
         print("\nThe program has reached the end and it will now exit")
 
 else:
