@@ -129,7 +129,7 @@ if (userInput == '1'):
         oriImageName = str(input("Enter the name of the original image (Lenna.jpg): "))
         print("Seller specify the name for the watermarked image that will be pass to the buyer")
         # Name of the watermarked image with buyer's and seller's encrypted watermark
-        wImageName = str(input("Enter the name for the watermarked image (must include .jpg): "))
+        wImageName = str(input("Enter the name for the watermarked image (Lenna2.jpg): "))
 
         # Using exception handling to catch incorrect filename or file that does not exit
         try:
@@ -305,7 +305,7 @@ elif (userInput == '2'):
         # Using exception handling to catch incorrect filename or file that does not exit
         try:
             # This function decrypt the extracted encrypted buyer's watermark to extracted buyer's watermark
-            decryptRSAReturnArrayBuyer = decryptRSA.decryptRSA(buyerKey, buyerCipherFile, buyerWatermarkFN)
+            decryptRSAReturnArrayBuyer = decryptRSA.decryptRSA(buyerKey, buyerExtractedFile, buyerWatermarkFN)
         except:
             print("(" + str(buyerWatermarkFN) + ")" + " buyer's watermark file does not exist. Try (origin_buyerCipher.txt)")
             print("Program exiting.")
@@ -316,14 +316,14 @@ elif (userInput == '2'):
         # Using exception handling to catch incorrect filename or file that does not exit
         try:
             # This function decrypt the extracted encrypted seller's watermark to extracted seller's watermark
-            decryptRSAReturnArraySeller = decryptRSA.decryptRSA(sellerKey, sellerCipherFile, sellerWatermarkFN)
+            decryptRSAReturnArraySeller = decryptRSA.decryptRSA(sellerKey, sellerExtractedFile, sellerWatermarkFN)
         except:
             print("(" + str(sellerWatermarkFN) + ")" + " seller's watermark file does not exist. Try (origin_sellerCipher.txt)")
             print("Program exiting.")
             sys.exit()
 
         print("Start Decrypting the Extracted Encrypted Watermarks of Buyer and Seller")
-        print("Decryption is done\n")
+        print("Decryption is done")
             
         if (decryptRSAReturnArrayBuyer[0] == 1):
             # Handling the case where the decrypted values MATCH with the suspected buyer's watermark
