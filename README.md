@@ -85,20 +85,22 @@ For more information on installing the matlab.engine package, visit [here](https
 
 - Size of the watermark to be inserted heavily depends on the size of the image given. Our program will not be able to embeds the buyer's and the seller's watermark if the summation of the size of both watermarks is greater than the size of the image. However, this can be easily fixed by using a image with larger size.
 
-- Reliance in the involvement of trusted third party in order to verify watermarks embbeded in the watermarked image belongs to the seller and the buyer.
+- Reliance in the involvement of trusted third party in order to verify watermarks embedded in the watermarked image belongs to the seller and the buyer. Information stored within watermarks are available to trusted third party, therefore privacy of buyer's information is not protected.
+
+- Currently, our program can only embed information in images with equal width and height.
 
 # Potential Improvements and Further Work
 - Apply Discrete Fourier Transform (DFT) to solve the resizing vulnerability in order to allow our program to be used across all Social Networking Services.
 
-- Implement Homomorphic Encryption to allows Encrypt Then Insert method to be used. Hence, this preserves the privacy and confidentiality of the buyer's and the seller's watermark as both buyer and seller could perform operations such as inserting their watermark after they have encrypted the components within the image.
+- Implement Homomorphic Encryption to allows the use of the Encrypt Then Insert method. This preserves the privacy and confidentiality of the buyer's and the seller's watermark as both buyer and seller could perform operations such as inserting their watermark after they have encrypted the components within the image.
 
 # Considerations:
 ## Robustness:
-- User's inputs are properly checked and handled using IF-ElSE condition.
-- Exception handling is done in order to detect incorrect filename that is provided by the user using TRY-EXCEPT method.
+- User's inputs are properly checked and handled using IF-ElSE conditions.
+- Exception handling is done in order to detect incorrect filename that is provided by the user using TRY-EXCEPT blocks.
 ## Scalability:
 - Our program is able to run watermark embedding and extracting for image of any size.
 ## Platform and OS independence:
-- Our program works for any operating system as long as it has access to the softwares and modules that we have specified under the software requirement and the libraries/ modules sections.
+- Our program works for any Windows, Linux and MacOS as long as it has access to the softwares and modules that we have specified under the software requirement and the libraries/ modules sections.
 ## Security:
-- Asymmetric Rivest-Shamir-Adleman (RSA) encryption is used in our program to preserves the non-framing and non-repudation security properties that the buyer-seller watermarking protocol possessed and the confidentiality of buyer's and seller's watermarks that were embedded within the watermarked image.
+- Asymmetric Rivest-Shamir-Adleman (RSA) encryption is used in our program to preserves the non-framing and non-repudation security properties that the buyer-seller watermarking protocol possessed and the confidentiality of buyer's and seller's watermarks that were embedded within the watermarked image. SHA-3 (Secure Hash Algorithm 3) is used by the seller for the authentication of the information received from the Buyer.
