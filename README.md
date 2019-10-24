@@ -83,7 +83,9 @@ For more information on installing the matlab.engine package, visit [here](https
 # Limitations of the code
 - Discrete Cosine Transform (DCT) watermark embedding technique used in our program is not robust against image resizing. Hence, it restricts us from using Social Networking Services that resizes the image.
 
-- Size of the watermark to be inserted heavily relies on the size of the image given. Our program will not be able to embeds the buyer's and the seller's watermark if the summation of the size of both watermarks is greater than the size of the image.
+- Size of the watermark to be inserted heavily depends on the size of the image given. Our program will not be able to embeds the buyer's and the seller's watermark if the summation of the size of both watermarks is greater than the size of the image.
+
+- Reliance in the involvement of trusted third party in order to verify watermarks embbeded in the watermarked image belongs to the seller and the buyer.
 
 # Potential Improvements and Further Work
 - Apply Discrete Fourier Transform (DFT) to solve the resizing vulnerability that is present in our program in order to allow our program to be used across all Social Networking Services.
@@ -96,8 +98,8 @@ For more information on installing the matlab.engine package, visit [here](https
 - Exception handling is done in order to detect incorrect filename that is provided by the user using TRY-EXCEPT method.
 ## Scalability:
 - Our program is able to run watermark embedding and extracting for image of any size.
-- However, the size of the watermark to be inserted by the buyer and seller heavily relies on the size of the image given.
+- However, the size of the watermark to be inserted by the buyer and seller heavily depends on the size of the image given.
 ## Platform and OS independence:
-- Our program works for any operating system as long as it has access to the softwares and modules that we have specified under the software requirement and libraries/ modules section.
+- Our program works for any operating system as long as it has access to the softwares and modules that we have specified under the software requirement and the libraries/ modules sections.
 ## Security:
-- Asymmetric Rivest-Shamir-Adleman (RSA) encryption is used in our program to preserves the non-framing and non-repudation security properties that the buyer-seller protocol has.
+- Asymmetric Rivest-Shamir-Adleman (RSA) encryption is used in our program to preserves the non-framing and non-repudation security properties that buyer-seller protocol has.
