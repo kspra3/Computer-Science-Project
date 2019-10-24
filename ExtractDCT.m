@@ -39,7 +39,7 @@ function dataExtractingDCT(bWatermarkFile,sWatermarkFile,wImgName)
     % blockPixels is the 2D size of the block
     blockPixels = block_size * block_size;
     % embed_per_size is the number of block that can fit into the image for a single dimension (width)
-    embed_per_size = floor(img_size_w / block_size);
+    embed_per_size = floor(img_size_w / block_size / 2);
     % blocksToEmbed is the total number of block that can fit into the image
     blocksToEmbed = floor((embed_per_size*embed_per_size)/2);
     % max_embed_times_Buyer is the maximum number of times that the buyer watermark is embedded into the image
