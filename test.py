@@ -42,6 +42,8 @@ class pyTest(unittest.TestCase):
             key = RSA.import_key(keyfile.read()) 
 
         ciphertext = encrypt(msg, key)
+        plaintext = decrypt(ciphertext, key)
+        self.assertEqual(plaintext, msg)
         self.assertNotEqual(ciphertext, msg)
 
     # testing same keys yield different ciphertext, due to random padding
@@ -122,7 +124,9 @@ class pyTest(unittest.TestCase):
     # test that bitstring_to_bytes output is of type bytes
     def test_bitstring2bytes(self):
         string = "10000000"
+        byte = b'\x80'
         output = bitstring_to_bytes(string)
+        self.assertEqual(output, byte)
         self.assertEqual(type(output), bytes)        
 
     # test that ciphertext is correctly written into file 
@@ -166,12 +170,10 @@ class pyTest(unittest.TestCase):
 
         keyfile = "temp.PEM"
         generateKeys(keyfile)
-        ciphertextfile = "out.txt"
+
         ciphertextfile2 = "out2.txt"
         originFilename = "origin.txt"
 
-        inp.return_value = msg
-        encryptRSA(keyfile, ciphertextfile)
         inp.return_value = msg2
         encryptRSA(keyfile, ciphertextfile2)
 
