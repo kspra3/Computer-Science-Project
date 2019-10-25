@@ -81,7 +81,7 @@ system('python setup.py install')
 For more information on installing the matlab.engine package, visit [here](https://au.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html).
 
 # Limitations of the code
-- Discrete Cosine Transform (DCT) watermark embedding technique used in our program is not robust against image resizing. Hence, it restricts us from using Social Networking Services that resizes the image.
+- Discrete Cosine Transform (DCT) watermark embedding technique used in our program is not robust against image resizing. Hence, it restricts us from using Social Networking Services that resizes the image. This limits the size of the image to be watermarked to be not greater than 1200px * 1200px as Tumblr only accept image up to size 1280px * 1280px else it would resize the image and this will cause the watermark embedded into the image to be removed as discrete cosine transform is not tolerant against image resizing.
 
 - Size of the watermark to be inserted heavily depends on the size of the image given. Our program will not be able to embeds the buyer's and the seller's watermark if the summation of the size of both watermarks is greater than the size of the image. However, this can be easily fixed by using a image with larger size.
 
