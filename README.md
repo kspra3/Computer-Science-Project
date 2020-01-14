@@ -1,5 +1,3 @@
-# README.md
-
 # End User Guide
 
 ## Guidelines/ Steps to run the program
